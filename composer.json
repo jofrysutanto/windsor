@@ -1,0 +1,37 @@
+{
+    "name": "jofrysutanto/acf-yaml",
+    "description": "YAML-ised Configuration for ACF",
+    "type": "package",
+    "keywords": [
+        "wordpress", "advanced-custom-fields"
+    ],
+    "license": "Apache",
+    "authors": [
+        {
+            "name": "Jofry Sutanto",
+            "email": "jofrysutanto@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "AcfYaml\\": "src/"
+        },
+        "files": [
+            "bootstrap/start.php"
+        ]
+    },
+    "scripts": {
+        "test": [
+            "phpcs --extensions=php --standard=PSR2 src/ bootstrap/"
+        ],
+        "fix": [
+            "phpcbf src/ bootstrap/"
+        ]
+    }
+}
