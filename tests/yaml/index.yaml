@@ -1,0 +1,5 @@
+fields:
+  - sample-field.acf.yaml
+pages:
+  - sample-page.acf.yaml
+  - sample-page2.acf.yaml

@@ -1,8 +1,8 @@
 <?php
+namespace Windsor\Capsule;
 
-namespace AcfYaml\Capsule;
-
-use AcfYaml\Capsule\BlueprintsFactory;
+use Tightenco\Collect\Support\Arr;
+use Windsor\Capsule\BlueprintsFactory;
 
 class FieldGroup
 {
@@ -33,7 +33,7 @@ class FieldGroup
     /**
      * Templates repository
      *
-     * @var \AcfYaml\Capsule\BlueprintsFactory
+     * @var \Windsor\Capsule\BlueprintsFactory
      */
     protected $templates;
 
@@ -58,7 +58,7 @@ class FieldGroup
      */
     public function make($content)
     {
-        $this->namespace(array_get($content, 'key'), function () use ($content) {
+        $this->namespace(Arr::get($content, 'key'), function () use ($content) {
             $this->content = $content;
             $this->parsed = tap($content, function (&$group) {
                 $group = $this->parseGroup($group);
@@ -123,7 +123,7 @@ class FieldGroup
     protected function parseFields($group)
     {
         $fields = [];
-        $yamlFields = array_get($group, $this->getFieldsKey(), []);
+        $yamlFields = Arr::get($group, $this->getFieldsKey(), []);
         if (!$yamlFields) {
             return [];
         }
@@ -147,12 +147,12 @@ class FieldGroup
     protected function parseLayouts($group)
     {
         $parsedLayouts = [];
-        $layouts = array_get($group, 'layouts', []);
+        $layouts = Arr::get($group, 'layouts', []);
         foreach ($layouts as $layoutKey => $layoutConfig) {
             $parsedLayout = $this->makeField($layoutKey, $layoutConfig);
             // We don't need 'type' for layouts
             unset($parsedLayout['type']);
-            $yamlFields = array_get($parsedLayout, 'sub_fields', []);
+            $yamlFields = Arr::get($parsedLayout, 'sub_fields', []);
             $yamlFields = $this->templates->mergeBlueprints($yamlFields);
 
             $fields = [];
@@ -181,7 +181,7 @@ class FieldGroup
             'key'  => $uniqueKey
         ]);
 
-        if ($groupType = $this->getGroupType(array_get($value, 'type'))) {
+        if ($groupType = $this->getGroupType(Arr::get($value, 'type'))) {
             $value = (new FieldGroup($groupType))
                 ->setDebug($this->isDebugging())
                 ->make($value)
@@ -190,6 +190,7 @@ class FieldGroup
 
         collect([
             Rules\FieldDefaultsRule::class,
+            Rules\WrapperShortcuts::class,
             Rules\FieldConditionRule::class,
             Rules\HelperRule::class,
         ])->each(function ($rule) use ($key, &$value) {

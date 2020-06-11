@@ -1,20 +1,20 @@
 <?php
+namespace Windsor\Capsule\Utilities;
 
-namespace AcfYaml\Capsule\Utilities;
+use Tightenco\Collect\Support\Arr;
 
 class PrefixConditionalLogic
 {
-
     public function run($acf, $prefixOrCallable = null)
     {
-        $conditions = array_get($acf, 'conditional_logic', []);
+        $conditions = Arr::get($acf, 'conditional_logic', []);
         if (count($conditions) <= 0) {
             return $acf;
         }
 
         foreach ($conditions as $and => $andContent) {
             foreach ($andContent as $or => $value) {
-                $keyReference = array_get($value, 'field', '');
+                $keyReference = Arr::get($value, 'field', '');
                 $path = sprintf('conditional_logic.%s.%s.field', $and, $or);
 
                 if (is_string($prefixOrCallable)) {
@@ -25,7 +25,7 @@ class PrefixConditionalLogic
                     throw new \Exception("Unable to prefix given key: $keyReference");
                 }
 
-                array_set($acf, $path, $prefixedKey);
+                Arr::set($acf, $path, $prefixedKey);
             }
         }
 

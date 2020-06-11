@@ -1,6 +1,5 @@
 <?php
-
-namespace AcfYaml\Support;
+namespace Windsor\Support;
 
 /**
  * Singleton trait.

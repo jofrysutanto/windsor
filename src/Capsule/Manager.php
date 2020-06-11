@@ -1,29 +1,30 @@
 <?php
+namespace Windsor\Capsule;
 
-namespace AcfYaml\Capsule;
+use Tightenco\Collect\Support\Arr;
 
 class Manager
 {
     /**
-     * @var Finder
+     * @var \Windsor\Parser\Finder
      */
     protected $finder;
 
     /**
-     * @var BlueprintsFactory
+     * @var \Windsor\Capsule\BlueprintsFactory
      */
     protected $blueprints;
 
     /**
-     * @var array
+     * @var \Windsor\Support\Config
      */
     protected $config;
 
-    public function __construct($config = [])
+    public function __construct($config, $finder, $blueprints)
     {
-        $this->finder = new Finder;
-        $this->blueprints = BlueprintsFactory::instance();
         $this->config = $config;
+        $this->finder = $finder;
+        $this->blueprints = $blueprints;
     }
 
     /**
@@ -34,18 +35,39 @@ class Manager
      */
     public function register()
     {
+        $this->build()
+            ->each(function ($parsed) {
+                acf_add_local_field_group($parsed);
+            });
+    }
+
+    /**
+     * Build and return parsed ACF fields
+     *
+     * @return \Tightenco\Collect\Support\Collection
+     */
+    public function build()
+    {
+        $this->loadConfig();
+        $this->finder
+            ->setBasePath($this->config->get('path'))
+            ->setIndex($this->config->get('entry'))
+            ->setParser($this->config->get('parser'));
+
         // Collect all reusable blueprints
         $this->storeBlueprints(
             $this->getDefinitions('blueprints')
         );
 
+        $results = collect();
         foreach (['fields', 'pages'] as $type) {
             collect($this->getDefinitions($type))
-                ->each(function ($def) {
+                ->each(function ($def) use ($results) {
                     $parsed = $this->read($def);
-                    acf_add_local_field_group($parsed);
+                    $results->push($parsed);
                 });
         }
+        return $results;
     }
 
     /**
@@ -59,7 +81,7 @@ class Manager
         $content = $this->finder->read($def);
 
         $result = (new FieldGroup(FieldGroup::TYPE_FIELD_GROUP))
-            ->setDebug(array_get($this->config, 'debug', false))
+            ->setDebug(Arr::get($this->config, 'debug', false))
             ->make($content)
             ->parsed();
 
@@ -82,6 +104,16 @@ class Manager
     }
 
     /**
+     * Load configuration values
+     *
+     * @return void
+     */
+    protected function loadConfig()
+    {
+        $this->config->initialise();
+    }
+
+    /**
      * Retrieve locations of ACF definitions
      *
      * @return array
@@ -90,8 +122,9 @@ class Manager
     {
         try {
             $fields = $this->finder->index();
-            return array_get($fields, $type, []);
+            return Arr::get($fields, $type, []);
         } catch (\Throwable $th) {
+            throw $th;
             return [];
         }
     }

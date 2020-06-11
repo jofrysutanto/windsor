@@ -1,9 +1,8 @@
 <?php
-
-namespace AcfYaml;
+namespace Windsor;
 
 use EvolveEngine\Core\ServiceProvider;
-use AcfYaml\Capsule\Manager;
+use Windsor\Capsule\Manager;
 
 class AcfServiceProvider extends ServiceProvider
 {

@@ -1,6 +1,7 @@
 <?php
+namespace Windsor\Capsule\Rules;
 
-namespace AcfYaml\Capsule\Rules;
+use Tightenco\Collect\Support\Arr;
 
 class FieldDefaultsRule
 {
@@ -14,25 +15,15 @@ class FieldDefaultsRule
      */
     public function process($group, $key, array $acf): array
     {
-        $type = array_get($acf, 'type');
+        $type = Arr::get($acf, 'type');
+        // Default field type to text (commonly used)
         if (!$type) {
-            // Default field type to text (commonly used)
             $acf['type'] = 'text';
-        }
-        // Shortcut to width
-        if ($width = array_get($acf, 'width')) {
-            unset($acf['width']);
-            array_set($acf, 'wrapper.width', $width);
-        }
-        // Shortcut to class
-        if ($class = array_get($acf, 'class')) {
-            unset($acf['class']);
-            array_set($acf, 'wrapper.class', $class);
         }
         // Typo resistance
         // - instruction -> instructions
-        if ($instruction = array_get($acf, 'instruction')) {
-            array_set($acf, 'instructions', $instruction);
+        if ($instruction = Arr::get($acf, 'instruction')) {
+            Arr::set($acf, 'instructions', $instruction);
             unset($acf['instruction']);
         }
         return $acf;

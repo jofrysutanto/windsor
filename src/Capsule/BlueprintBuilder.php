@@ -1,8 +1,9 @@
 <?php
+namespace Windsor\Capsule;
 
-namespace AcfYaml\Capsule;
-
-use AcfYaml\Capsule\Utilities\PrefixConditionalLogic;
+use Windsor\Support\Fluent;
+use Tightenco\Collect\Support\Arr;
+use Windsor\Capsule\Utilities\PrefixConditionalLogic;
 
 class BlueprintBuilder
 {
@@ -31,7 +32,7 @@ class BlueprintBuilder
 
     public function __construct(array $config, $key, $fields)
     {
-        $this->config = new \Illuminate\Support\Fluent($config);
+        $this->config = new Fluent($config);
         $this->key = $key;
         $this->fields = $fields;
     }
@@ -47,7 +48,7 @@ class BlueprintBuilder
         $keys = $this->collectKeys();
         $result = [];
         foreach ($keys as $key) {
-            $field = array_get($this->config->fields, $key);
+            $field = Arr::get($this->config->fields, $key);
             if (!$field) {
                 continue;
             }
@@ -55,14 +56,14 @@ class BlueprintBuilder
         }
 
         // Prefix labels if necessary
-        $prefixLabel = array_get($this->fields, 'prefix_label', false);
+        $prefixLabel = Arr::get($this->fields, 'prefix_label', false);
         if ($prefixLabel) {
             $result = array_map(function ($field) {
-                $label = array_get($field, 'label');
+                $label = Arr::get($field, 'label');
                 if (!$label) {
                     return $field;
                 }
-                $prefix = array_get($this->fields, 'label');
+                $prefix = Arr::get($this->fields, 'label');
                 $field['label'] = $prefix . ' ' . $label;
                 return $field;
             }, $result);
@@ -71,13 +72,13 @@ class BlueprintBuilder
         // Merge fields
         // Additional fields can be added, or existing fields can be overwritten
         // by YAML config using the `merge` key
-        $mergeFields = array_get($this->fields, 'merge', []);
+        $mergeFields = Arr::get($this->fields, 'merge', []);
         if (count($mergeFields) > 0) {
             $result = array_replace_recursive($result, $mergeFields);
         }
 
         // Layout
-        $layout = array_get($this->fields, 'layout', []);
+        $layout = Arr::get($this->fields, 'layout', []);
         if (count($layout) > 0) {
             $result = $this->reLayout($result, $layout);
         }
@@ -95,11 +96,11 @@ class BlueprintBuilder
      */
     protected function collectKeys()
     {
-        if ($keys = array_get($this->fields, 'only')) {
+        if ($keys = Arr::get($this->fields, 'only')) {
             return $keys;
         }
-        $fieldKeys = array_keys(array_get($this->config, 'fields'));
-        if ($excludes = array_get($this->fields, 'excludes')) {
+        $fieldKeys = array_keys(Arr::get($this->config, 'fields'));
+        if ($excludes = Arr::get($this->fields, 'excludes')) {
             return array_diff($fieldKeys, $excludes);
         }
         return $fieldKeys;
@@ -113,7 +114,8 @@ class BlueprintBuilder
      * - field1@50 : where `field1` is the name of the key, and `50` is the width %
      * - field2@50
      * ```
-     * The items above are ordered according to the index. Any missing fields will be appended last.
+     * The items above are ordered according to the index.
+     * Any missing fields will be appended last.
      *
      * @param array $fields
      * @param array $layout
@@ -135,9 +137,9 @@ class BlueprintBuilder
             if (count($fragments) > 1) {
                 $width = $fragments[1];
             }
-            $result[$key] = array_pull($fields, $key);
+            $result[$key] = Arr::pull($fields, $key);
             if ($width) {
-                $result[$key]['width'] = $width;
+                $result[$key]['wrapper_width'] = $width;
             }
         }
         // If there are left overs, we simply append them to the end of resulting array
@@ -165,7 +167,7 @@ class BlueprintBuilder
             $value = $this->processConditionalLogic($prefix, $value);
             $result[$newKey] = $value;
         }
-        
+
         return $result;
     }
 
@@ -182,7 +184,7 @@ class BlueprintBuilder
      */
     protected function getPrefix()
     {
-        $prefix = array_get($this->fields, 'prefix', false);
+        $prefix = Arr::get($this->fields, 'prefix', false);
         if ($prefix === false) {
             return '';
         }

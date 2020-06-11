@@ -1,0 +1,3 @@
+phpunit:
+  binaryPath: vendor/bin/phpunit
+  arguments: 'tests --bootstrap tests/bootstrap.php --colors=always'

@@ -1,8 +1,8 @@
 <?php
+namespace Windsor\Capsule;
 
-namespace AcfYaml\Capsule;
-
-use AcfYaml\Support\Singleton;
+use Windsor\Support\Singleton;
+use Tightenco\Collect\Support\Arr;
 
 class BlueprintsFactory
 {
@@ -34,7 +34,7 @@ class BlueprintsFactory
         $result = [];
         foreach ($yamlFields as $key => $fields) {
             // Bail early if not 'blueprint' type field
-            if (array_get($fields, 'type') !== 'blueprint') {
+            if (Arr::get($fields, 'type') !== 'blueprint') {
                 $result[$key] = $fields;
                 continue;
             }
@@ -52,8 +52,8 @@ class BlueprintsFactory
      */
     protected function unpackBlueprint($key, array $fields = [])
     {
-        $source = array_get($fields, 'source');
-        $blueprint = array_get($this->blueprints, $source);
+        $source = Arr::get($fields, 'source');
+        $blueprint = Arr::get($this->blueprints, $source);
         if (!$blueprint) {
             return [
                 $key => $this->reportMissingBlueprint($source)

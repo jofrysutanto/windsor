@@ -1,8 +1,7 @@
 <?php
+namespace Windsor\Capsule\Rules;
 
-namespace AcfYaml\Capsule\Rules;
-
-use AcfYaml\Capsule\Utilities\PrefixConditionalLogic;
+use Windsor\Capsule\Utilities\PrefixConditionalLogic;
 
 class FieldConditionRule
 {

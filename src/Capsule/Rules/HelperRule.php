@@ -1,8 +1,8 @@
 <?php
+namespace Windsor\Capsule\Rules;
 
-namespace AcfYaml\Capsule\Rules;
-
-use AcfYaml\Capsule\FieldGroup;
+use Windsor\Capsule\FieldGroup;
+use Tightenco\Collect\Support\Arr;
 
 class HelperRule
 {
@@ -19,9 +19,9 @@ class HelperRule
         if (!$group->isDebugging()) {
             return $acf;
         }
-        $instruction = array_get($acf, 'instructions', '');
+        $instruction = Arr::get($acf, 'instructions', '');
         $instruction .= $this->getDebugHtml($group, $key);
-        array_set($acf, 'instructions', $instruction);
+        Arr::set($acf, 'instructions', $instruction);
         return $acf;
     }
 
@@ -35,8 +35,8 @@ class HelperRule
     protected function getDebugHtml($group, $key)
     {
         return sprintf("
-            <span style='font-size: 11px; display: inline-block;'>
-             Key: %s
+            <span style='border-radius: 0.25rem; background-color: #007cba; padding: 0.15rem 0.5rem; color: #fff; border: 1px solid #007cba; font-size: 11px; display: inline-block;'>
+             %s
             </span>
         ", $key);
     }

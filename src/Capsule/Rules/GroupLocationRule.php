@@ -1,6 +1,7 @@
 <?php
+namespace Windsor\Capsule\Rules;
 
-namespace AcfYaml\Capsule\Rules;
+use Tightenco\Collect\Support\Arr;
 
 class GroupLocationRule
 {
@@ -30,11 +31,11 @@ class GroupLocationRule
      */
     protected function checkCollapse($group, $acf)
     {
-        $collapsed = array_get($acf, 'collapsed');
+        $collapsed = Arr::get($acf, 'collapsed');
         if (!$collapsed) {
             return $acf;
         }
-        array_set($acf, 'collapsed', $group->makekey($collapsed));
+        Arr::set($acf, 'collapsed', $group->makekey($collapsed));
         return $acf;
     }
 
@@ -50,7 +51,7 @@ class GroupLocationRule
         if (!isset($acf['location'])) {
             return $acf;
         }
-        $locations = array_get($acf, 'location');
+        $locations = Arr::get($acf, 'location');
         if (is_null($locations)) {
             $acf['location'] = [
                 [
