@@ -11,18 +11,22 @@ This package extends [Advanced Custom Fields](https://advancedcustomfields.com) 
 
 ### Getting Started
 
-- Install ACF Windsor via composer in your theme:
+- The easiest way to install Windsor is to use composer:
 ```
-composer require jofrysutanto/acf-windsor
+composer require jofrysutanto/windsor "^0.9"
 ```
 - If you are using VSCode, be sure to add the Schema file to your configuration.
+- Ensure you have included composer auto-loader file. If you're not sure, add the following line into your `functions.php` file:
+```php
+require_once __DIR__ . '/vendor/autoload.php';
+```
 - Create YAML entry file at `your-theme/acf-fields/index.yaml`. At minimum, your entry file should contain:
 ```yaml
 fields: []
 pages: []
 ```
 - Test your installation:
-  - Create your first custom field YAML, for example create a file `your-theme/acf-fields/page-default.yaml`:
+  - Create your first custom field YAML, for example create a file `your-theme/acf-fields/page-default.acf.yaml`:
   ```yaml
   title: 'Page Default'
   key: 'page_default'
