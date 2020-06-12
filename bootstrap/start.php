@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile
 use Windsor\Parser\Finder;
 use Windsor\Support\Config;
 use Windsor\Capsule\BlueprintsFactory;

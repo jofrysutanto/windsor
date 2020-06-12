@@ -34,7 +34,8 @@
     },
     "scripts": {
         "test": [
-            "phpcs --extensions=php --standard=PSR2 src/ bootstrap/"
+            "phpcs --extensions=php --standard=PSR2 src/ bootstrap/",
+            "vendor/bin/phpunit tests --bootstrap tests/bootstrap.php"
         ],
         "fix": [
             "phpcbf src/ bootstrap/"
