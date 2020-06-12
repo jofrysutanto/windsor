@@ -8,4 +8,7 @@ location:
       param: 'page_template'
       operator: '=='
       value: 'default'
-fields: []
+fields:
+  heading:
+    type: text
+    label: Heading
