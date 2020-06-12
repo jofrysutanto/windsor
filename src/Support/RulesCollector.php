@@ -30,7 +30,7 @@ class RulesCollector implements Arrayable
      */
     public function setupRules($rules = [])
     {
-        $this->rules = $rules;
+        $this->rules = apply_filters('acf-windsor/config/rules', $rules);
         return $this;
     }
 
