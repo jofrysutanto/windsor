@@ -6,7 +6,6 @@ use Tightenco\Collect\Contracts\Support\Arrayable;
 
 class Config implements Arrayable, ArrayAccess
 {
-    use Singleton;
 
     /**
      * Configuration attributes
@@ -15,16 +14,30 @@ class Config implements Arrayable, ArrayAccess
      */
     protected $attributes;
 
+    public function __construct($attributes = [])
+    {
+        $this->attributes = $attributes;
+    }
+
     /**
      * Initialise configuration values
      *
      * @return $this
      */
-    public function initialise()
+    public static function initialise()
     {
-        $config = apply_filters('acf-windsor/config', $this->getDefault());
-        $this->attributes = $config;
-        return $this;
+        return new static(apply_filters('acf-windsor/config', static::getDefault()));
+    }
+
+    /**
+     * Replace configuration values
+     *
+     * @param array $attributes
+     * @return \Windsor\Support\Config
+     */
+    public function setValues($attributes)
+    {
+        $this->attributes = $attributes;
     }
 
     /**
@@ -32,7 +45,7 @@ class Config implements Arrayable, ArrayAccess
      *
      * @return array
      */
-    public function getDefault()
+    public static function getDefault()
     {
         $path = __DIR__ .'/../config.php';
         if (!file_exists($path)) {

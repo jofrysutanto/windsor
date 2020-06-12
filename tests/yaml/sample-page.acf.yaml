@@ -1,0 +1,11 @@
+title: 'Page Default'
+key: 'page_default'
+position: 'acf_after_title'
+hide_on_screen: []
+location:
+  -
+    -
+      param: 'page_template'
+      operator: '=='
+      value: 'default'
+fields: []

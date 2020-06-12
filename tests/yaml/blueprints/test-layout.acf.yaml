@@ -1,0 +1,24 @@
+title: 'My Field Group'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location:
+    -
+        -
+            param: 'post_type'
+            operator: '=='
+            value: 'post'
+fields:
+    merge_layout:
+        type: blueprint
+        label: Merge Layout
+        source: "my-blueprint"
+        merge:
+          description:
+            type: 'textarea'
+            label: 'Description'
+        layout:
+          - use_image@50
+          - image@50
+          - heading@40
+          - description@60

@@ -1,0 +1,17 @@
+title: 'My Field Group'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location:
+    -
+        -
+            param: 'post_type'
+            operator: '=='
+            value: 'post'
+fields:
+    merge_prefix:
+        type: blueprint
+        label: Merge
+        source: "my-blueprint"
+        prefix: true
+        prefix_label: true

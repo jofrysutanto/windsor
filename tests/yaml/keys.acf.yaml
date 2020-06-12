@@ -1,0 +1,44 @@
+title: 'My Sample Field'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location: null
+fields:
+  # Test setting default 'type'
+  repeat:
+    label: Repeat
+    type: "repeater"
+    layout: "block"
+    sub_fields:
+      sub_1:
+        type: text
+        label: Sub 1
+      sub_2_repeat:
+        label: Sub 2 Repeat
+        type: "repeater"
+        layout: "block"
+        sub_fields:
+          sub_sub_1:
+            type: text
+            label: Sub Sub 1
+  flex:
+    label: Flex
+    type: "flexible_content"
+    button_label: "Add Row"
+    min: 0
+    max: 0
+    layouts:
+      layout_1:
+        display: 'block'
+        label: 'Layout 1'
+        sub_fields:
+          layout_sub_1:
+            type: 'text'
+            label: 'My Field'
+      layout_2:
+        display: 'block'
+        label: 'Layout 2'
+        sub_fields:
+          layout_sub_1:
+            type: 'text'
+            label: 'My Field'

@@ -1,0 +1,19 @@
+title: 'My Field Group'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location:
+    -
+        -
+            param: 'post_type'
+            operator: '=='
+            value: 'post'
+fields:
+    merge_additional:
+        type: blueprint
+        label: Merge Additional Fields
+        source: "my-blueprint"
+        merge:
+          description:
+            type: 'textarea'
+            label: 'Description'

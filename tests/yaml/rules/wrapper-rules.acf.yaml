@@ -1,0 +1,13 @@
+title: 'My Sample Field'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location: null
+fields:
+  # Test setting default 'type'
+  field_1:
+    label: Field 1
+    wrapper_width: 300
+    wrapper_class: 'my-css'
+    wrapper_id: 'myUniqueId'
+

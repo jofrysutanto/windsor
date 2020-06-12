@@ -1,0 +1,15 @@
+title: 'My Sample Field'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location: null
+fields:
+  # Test setting default 'type'
+  field_1:
+    label: Field 1
+  field_2:
+    label: Field 2
+    type: 'text'
+    # Test typo resistance
+    instruction: "My instructions"
+

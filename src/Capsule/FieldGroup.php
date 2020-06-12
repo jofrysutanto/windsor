@@ -2,6 +2,7 @@
 namespace Windsor\Capsule;
 
 use Tightenco\Collect\Support\Arr;
+use Windsor\Support\RulesCollector;
 use Windsor\Capsule\BlueprintsFactory;
 
 class FieldGroup
@@ -38,6 +39,13 @@ class FieldGroup
     protected $templates;
 
     /**
+     * Rules collection
+     *
+     * @var \Windsor\Support\RulesCollector
+     */
+    protected $rules;
+
+    /**
      * Debug mode flag
      *
      * @var boolean
@@ -54,7 +62,7 @@ class FieldGroup
      * Create and parse group with given content
      *
      * @param array $content
-     * @return $this
+     * @return \Windsor\Capsule\FieldGroup
      */
     public function make($content)
     {
@@ -88,7 +96,7 @@ class FieldGroup
      *
      * @param string $namespace
      * @param Closure $callback
-     * @return $this
+     * @return \Windsor\Capsule\FieldGroup
      */
     public function namespace($namespace, $callback)
     {
@@ -106,11 +114,11 @@ class FieldGroup
      */
     protected function parseGroup($group)
     {
-        collect([
-            Rules\GroupLocationRule::class
-        ])->each(function ($rule) use (&$group) {
-            $group = (new $rule)->process($this, '', $group);
-        });
+        $this->rules
+            ->get('groups')
+            ->each(function ($rule) use (&$group) {
+                $group = (new $rule)->process($this, '', $group);
+            });
         return $group;
     }
 
@@ -149,6 +157,8 @@ class FieldGroup
         $parsedLayouts = [];
         $layouts = Arr::get($group, 'layouts', []);
         foreach ($layouts as $layoutKey => $layoutConfig) {
+            // dump($this->makeKey($layoutKey));
+            // dump($layoutKey);
             $parsedLayout = $this->makeField($layoutKey, $layoutConfig);
             // We don't need 'type' for layouts
             unset($parsedLayout['type']);
@@ -156,9 +166,11 @@ class FieldGroup
             $yamlFields = $this->templates->mergeBlueprints($yamlFields);
 
             $fields = [];
-            foreach ($yamlFields as $key => $value) {
-                $fields[] = $this->makeField($key, $value);
-            }
+            $this->namespace($this->makeKey($layoutKey), function () use ($yamlFields, &$fields) {
+                foreach ($yamlFields as $key => $value) {
+                    $fields[] = $this->makeField($key, $value);
+                }
+            });
 
             $parsedLayout['sub_fields'] = $fields;
             $parsedLayouts[] = $parsedLayout;
@@ -184,18 +196,16 @@ class FieldGroup
         if ($groupType = $this->getGroupType(Arr::get($value, 'type'))) {
             $value = (new FieldGroup($groupType))
                 ->setDebug($this->isDebugging())
+                ->setRules(new RulesCollector($this->rules))
                 ->make($value)
                 ->parsed();
         }
 
-        collect([
-            Rules\FieldDefaultsRule::class,
-            Rules\WrapperShortcuts::class,
-            Rules\FieldConditionRule::class,
-            Rules\HelperRule::class,
-        ])->each(function ($rule) use ($key, &$value) {
-            $value = (new $rule)->process($this, $key, $value);
-        });
+        $this->rules
+            ->get('fields')
+            ->each(function ($rule) use ($key, &$value) {
+                $value = (new $rule)->process($this, $key, $value);
+            });
 
         return $value;
     }
@@ -222,11 +232,23 @@ class FieldGroup
      * Set debug mode
      *
      * @param boolean $isDebugging
-     * @return $this
+     * @return \Windsor\Capsule\FieldGroup
      */
     public function setDebug($isDebugging = true)
     {
         $this->debug = $isDebugging;
+        return $this;
+    }
+
+    /**
+     * Set transformation rules
+     *
+     * @param \Windsor\Support\RulesCollector $rules
+     * @return \Windsor\Capsule\FieldGroup
+     */
+    public function setRules($rules)
+    {
+        $this->rules = $rules;
         return $this;
     }
 

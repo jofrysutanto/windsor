@@ -1,22 +1,23 @@
 <?php
-namespace Windsor\Capsule\Rules;
+namespace Windsor\Rules;
 
 use Tightenco\Collect\Support\Arr;
 
 class GroupLocationRule
 {
+
     /**
      * Process this rule
      *
-     * @param FieldGroup  $group
+     * @param FieldGroup $group
      * @param string $key
      * @param array $acf
      * @return array
      */
     public function process($group, $key, array $acf): array
     {
-        $acf = $this->checkCollapse($group, $acf);
         $acf = $this->checkLocation($group, $acf);
+        $acf = $this->checkCollapse($group, $acf);
 
         return $acf;
     }
@@ -48,26 +49,36 @@ class GroupLocationRule
      */
     protected function checkLocation($group, $acf)
     {
-        if (!isset($acf['location'])) {
+        $locations = Arr::get($acf, 'location', false);
+        if ($locations === false) {
             return $acf;
         }
-        $locations = Arr::get($acf, 'location');
         if (is_null($locations)) {
-            $acf['location'] = [
-                [
-                    [
-                        'param'    => 'options_page',
-                        'operator' => '==',
-                        'value'    => 'acf-options-global-options'
-                    ],
-                    [
-                        'param'    => 'options_page',
-                        'operator' => '!=',
-                        'value'    => 'acf-options-global-options'
-                    ]
-                ]
-            ];
+            $acf['location'] = $this->getHiddenLocationRule();
         }
         return $acf;
+    }
+
+    /**
+     * Retrieve location rule which ensures the field is not shown
+     *
+     * @return array
+     */
+    public function getHiddenLocationRule()
+    {
+        return [
+            [
+                [
+                    'param'    => 'options_page',
+                    'operator' => '==',
+                    'value'    => 'acf-options-global-options'
+                ],
+                [
+                    'param'    => 'options_page',
+                    'operator' => '!=',
+                    'value'    => 'acf-options-global-options'
+                ]
+            ]
+        ];
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Windsor\Capsule\Rules;
+namespace Windsor\Rules;
 
 use Tightenco\Collect\Support\Arr;
 

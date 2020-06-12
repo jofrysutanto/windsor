@@ -1,0 +1,7 @@
+title: 'Simple Field Group'
+key: 'simple_field_group'
+location: null
+fields:
+  heading:
+    type: text
+    label: Heading

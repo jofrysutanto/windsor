@@ -1,10 +1,9 @@
 <?php
-// Bail early if running in CLI mode
-
 use Windsor\Parser\Finder;
 use Windsor\Support\Config;
 use Windsor\Capsule\BlueprintsFactory;
 
+// Bail early if running in CLI mode
 if (PHP_SAPI == 'cli') {
     return;
 }
@@ -15,11 +14,11 @@ if (PHP_SAPI == 'cli') {
 function register_windsor()
 {
     if (!class_exists('ACF')) {
-        // Bail early if ACF is not installed
+        // Bail early if ACF is not available
         return;
     }
     $manager = new \Windsor\Capsule\Manager(
-        Config::instance(),
+        Config::initialise(),
         new Finder,
         BlueprintsFactory::instance()
     );

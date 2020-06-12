@@ -1,0 +1,25 @@
+fields:
+  heading:
+      type: text
+      label: Heading
+      wrapper_width: 50
+  use_image:
+      label: Use Image
+      type: "true_false"
+      ui: true
+      default: true
+      wrapper_width: 50
+  image:
+    label: Image
+    type: "image"
+    preview_size: 'large'
+    max_size: 5 # in MB
+    max_width: 2000 # in px
+    max_height: 2000 # in px
+    conditional_logic:
+      -
+        -
+          field: use_image
+          operator: '=='
+          value: true
+

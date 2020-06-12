@@ -2,6 +2,7 @@
 namespace Windsor\Capsule;
 
 use Tightenco\Collect\Support\Arr;
+use Windsor\Support\RulesCollector;
 
 class Manager
 {
@@ -48,11 +49,10 @@ class Manager
      */
     public function build()
     {
-        $this->loadConfig();
         $this->finder
-            ->setBasePath($this->config->get('path'))
-            ->setIndex($this->config->get('entry'))
-            ->setParser($this->config->get('parser'));
+            ->setBasePath($this->config('path'))
+            ->setIndex($this->config('entry'))
+            ->setParser($this->config('parser'));
 
         // Collect all reusable blueprints
         $this->storeBlueprints(
@@ -81,7 +81,10 @@ class Manager
         $content = $this->finder->read($def);
 
         $result = (new FieldGroup(FieldGroup::TYPE_FIELD_GROUP))
-            ->setDebug(Arr::get($this->config, 'debug', false))
+            ->setDebug($this->config('debug', false))
+            ->setRules(
+                new RulesCollector($this->config('rules', []))
+            )
             ->make($content)
             ->parsed();
 
@@ -98,19 +101,21 @@ class Manager
     {
         foreach ($data as $def) {
             $content = $this->finder->read($def);
-            $key = str_replace('.yaml', '', basename($def));
+            $key = str_replace('.acf.yaml', '', basename($def));
             $this->blueprints->store($key, $content);
         }
     }
 
     /**
-     * Load configuration values
+     * Retrieve stored configuration value
      *
-     * @return void
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
      */
-    protected function loadConfig()
+    protected function config($key, $default = null)
     {
-        $this->config->initialise();
+        return $this->config->get($key, $default);
     }
 
     /**

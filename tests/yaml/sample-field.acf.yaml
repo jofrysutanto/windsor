@@ -1,0 +1,16 @@
+title: 'My Sample Field'
+key: 'my_sample_field'
+position: 'acf_after_title'
+hide_on_screen: []
+location: null
+fields:
+  banner_heading:
+    type: text
+    label: Banner Heading
+  banner_image:
+    label: Banner Image
+    type: "image"
+    preview_size: 'large'
+    max_size: 5 # in MB
+    max_width: 2000 # in px
+    max_height: 2000 # in px

@@ -1,0 +1,31 @@
+title: 'My Sample Field'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location: null
+fields:
+  # Test setting default 'type'
+  base:
+    label: Base Field
+    type: "group"
+    layout: "block"
+    sub_fields:
+      field_1:
+        type: text
+        label: Field 1
+  clone_seamless:
+    label: Clone
+    type: "clone"
+    display: "seamless"
+    prefix_label: false
+    prefix_name: false
+    clone:
+      - "base_field_1"
+  clone_group:
+    label: Clone
+    type: "clone"
+    display: group
+    prefix_label: false
+    prefix_name: false
+    clone:
+      - "base_field_1"

@@ -1,7 +1,7 @@
 <?php
-namespace Windsor\Capsule\Rules;
+namespace Windsor\Rules;
 
-use Windsor\Capsule\Utilities\PrefixConditionalLogic;
+use Windsor\Rules\Utilities\TransformConditionalLogic;
 
 class FieldConditionRule
 {
@@ -15,7 +15,7 @@ class FieldConditionRule
      */
     public function process($group, $key, array $acf): array
     {
-        $prefixer = new PrefixConditionalLogic();
+        $prefixer = new TransformConditionalLogic();
         return $prefixer->run($acf, function ($keyReference) use ($group) {
             return $group->makeKey($keyReference);
         });

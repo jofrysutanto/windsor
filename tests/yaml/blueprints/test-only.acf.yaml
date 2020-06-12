@@ -1,0 +1,17 @@
+title: 'My Field Group'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location:
+    -
+        -
+            param: 'post_type'
+            operator: '=='
+            value: 'post'
+fields:
+    merge_only_some:
+        type: blueprint
+        label: Merge Only Some
+        source: "my-blueprint"
+        only:
+          - 'heading'

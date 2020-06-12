@@ -24,4 +24,19 @@ return [
      */
     'parser' => \Windsor\Parser\YamlParser::class,
 
+    /**
+     * List transform rules for each fields and groups
+     */
+    'rules' => [
+        'fields' => [
+            \Windsor\Rules\FieldDefaultsRule::class,
+            \Windsor\Rules\WrapperShortcuts::class,
+            \Windsor\Rules\FieldConditionRule::class,
+            \Windsor\Rules\HelperRule::class,
+        ],
+        'groups' => [
+            \Windsor\Rules\GroupLocationRule::class,
+        ],
+    ]
+
 ];

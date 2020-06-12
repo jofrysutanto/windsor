@@ -1,0 +1,11 @@
+title: 'Blog Post'
+key: 'blog_post'
+position: 'acf_after_title'
+hide_on_screen: []
+location:
+  -
+    -
+      param: post_type
+      operator: '=='
+      value: post
+fields: []

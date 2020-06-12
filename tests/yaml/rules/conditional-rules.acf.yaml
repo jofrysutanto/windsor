@@ -1,0 +1,21 @@
+title: 'My Sample Field'
+key: '_'
+position: 'acf_after_title'
+hide_on_screen: []
+location: null
+fields:
+    # Test setting default 'type'
+    toggle:
+        label: Toggle
+        type: "true_false"
+        ui: true
+        default: true
+    heading:
+        type: text
+        label: Heading
+        conditional_logic:
+            -
+                -
+                    field: toggle
+                    operator: '=='
+                    value: true

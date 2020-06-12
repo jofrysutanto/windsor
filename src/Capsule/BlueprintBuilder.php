@@ -3,7 +3,7 @@ namespace Windsor\Capsule;
 
 use Windsor\Support\Fluent;
 use Tightenco\Collect\Support\Arr;
-use Windsor\Capsule\Utilities\PrefixConditionalLogic;
+use Windsor\Rules\Utilities\TransformConditionalLogic;
 
 class BlueprintBuilder
 {
@@ -173,7 +173,7 @@ class BlueprintBuilder
 
     protected function processConditionalLogic($prefix, $acf)
     {
-        $prefixer = new PrefixConditionalLogic;
+        $prefixer = new TransformConditionalLogic;
         return $prefixer->run($acf, $prefix);
     }
 
