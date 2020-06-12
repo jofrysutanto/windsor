@@ -20,7 +20,7 @@ composer require jofrysutanto/windsor "^0.9"
 ```php
 require_once __DIR__ . '/vendor/autoload.php';
 ```
-- Create YAML entry file at `your-theme/acf-fields/index.yaml`. At minimum, your entry file should contain:
+- Create YAML entry file at `[your-active-theme]/acf-fields/index.yaml`, where `[your-active-theme]` refers to your currently active Wordpress theme directory. At minimum, your entry file should contain:
 ```yaml
 fields: []
 pages: []
@@ -59,7 +59,7 @@ Check out full documentations at [https://windsor-docs.netlify.app/](https://win
 
 Only VSCode integration is available at the moment. To enable autocompletion and useful snippets, follow the installation steps below:
 - If not already installed, download and enable [YAML language server](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extension.
-- Update your VSCode settings (i.e. `settings.json`):
+- Update your VSCode [settings](https://code.visualstudio.com/docs/getstarted/settings#_settings-file-locations) (i.e. `settings.json`):
 ```json
 "yaml.schemas": {
     "https://windsor-docs.netlify.app/schema.json": "*.acf.yaml"

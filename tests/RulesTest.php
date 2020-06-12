@@ -1,4 +1,7 @@
 <?php
+
+use Windsor\Support\Config;
+
 final class RulesTest extends BaseTestCase
 {
     public function testDefaultRules()
@@ -71,6 +74,30 @@ final class RulesTest extends BaseTestCase
                 'id' => 'myUniqueId',
             ],
             $this->pluckFirst($manager, 'fields.0.wrapper')
+        );
+    }
+
+    public function testCustomRules()
+    {
+        $manager = $this->makeManager([
+            'finder' => $this->mockFinderEntry([
+                'fields' => ['sample-field.acf.yaml']
+            ]),
+            'config' => $this->mockConfig([
+                'rules' => [
+                    'fields' => [
+                        ChangeInstructionsToFoo::class
+                    ]
+                ]
+            ])
+        ]);
+        $this->assertEquals(
+            'foo',
+            $this->pluckFirst($manager, 'fields.0.instructions')
+        );
+        $this->assertEquals(
+            'foo',
+            $this->pluckFirst($manager, 'fields.1.instructions')
         );
     }
 }

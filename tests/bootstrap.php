@@ -1,6 +1,7 @@
 <?php
 
 require "BaseTestCase.php";
+require "ChangeInstructionsToFoo.php";
 
 if (! function_exists('apply_filters')) {
     /**

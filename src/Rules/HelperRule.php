@@ -9,7 +9,7 @@ class HelperRule
     /**
      * Process this rule
      *
-     * @param FieldGroup  $group
+     * @param FieldGroup $group
      * @param string $key
      * @param array $acf
      * @return array
