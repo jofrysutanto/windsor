@@ -1,6 +1,7 @@
 {
     "name": "jofrysutanto/windsor",
     "description": "YAML-ised Configuration for ACF",
+    "homepage": "https://github.com/jofrysutanto/windsor",
     "type": "package",
     "keywords": [
         "wordpress", "advanced-custom-fields"
@@ -13,7 +14,7 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=7.0.0",
         "symfony/yaml": "~5.0",
         "tightenco/collect": "^6.14"
     },
