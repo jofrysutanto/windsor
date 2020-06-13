@@ -66,3 +66,8 @@ Only VSCode integration is available at the moment. To enable autocompletion and
 }
 ```
 
+## Credits
+
+This package is written to be used with [Advanced Custom Fields](https://www.advancedcustomfields.com/) plugin by [Elliot Condon](https://www.elliotcondon.com/), who deserves most of the credits for delivering and maintaining such an incredible plugin for Wordpress developers.
+
+If you have not already started using Advanced Custom Fields, be sure to check it out; it will definitely be worth your while.
