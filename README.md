@@ -1,6 +1,6 @@
 # ACF Windsor
 
-This package extends [Advanced Custom Fields](https://advancedcustomfields.com) plugin for Wordpress and enable developers to write their ACF fields blazingly fast in configuration file.
+This package extends [Advanced Custom Fields](https://advancedcustomfields.com) plugin for WordPress and enable developers to write their ACF fields blazingly fast in configuration file.
 
 ![ACF Windsor](https://raw.githubusercontent.com/jofrysutanto/windsor/master/screenshot.png)
 
@@ -12,7 +12,7 @@ This package extends [Advanced Custom Fields](https://advancedcustomfields.com) 
 ### Getting Started
 
 - The easiest way to install Windsor is to use composer:
-```
+```sh
 composer require jofrysutanto/windsor "^0.9"
 ```
 - If you are using VSCode, be sure to add the Schema file to your configuration.
@@ -28,7 +28,7 @@ function register_acf_windsor()
 }
 add_action('acf/init', 'register_acf_windsor');
 ```
-- Create YAML entry file at `[your-active-theme]/acf-fields/index.yaml`, where `[your-active-theme]` refers to your currently active Wordpress theme directory. At minimum, your entry file should contain:
+- Create YAML entry file at `[your-active-theme]/acf-fields/index.yaml`, where `[your-active-theme]` refers to your currently active WordPress theme directory. At minimum, your entry file should contain:
 ```yaml
 fields: []
 pages: []
@@ -76,6 +76,6 @@ Only VSCode integration is available at the moment. To enable autocompletion and
 
 ## Credits
 
-This package is written to be used with [Advanced Custom Fields](https://www.advancedcustomfields.com/) plugin by [Elliot Condon](https://www.elliotcondon.com/), who deserves most of the credits for delivering and maintaining such an incredible plugin for Wordpress developers.
+This package is written to be used with [Advanced Custom Fields](https://www.advancedcustomfields.com/) plugin by [Elliot Condon](https://www.elliotcondon.com/), who deserves most of the credits for delivering and maintaining such an incredible plugin for WordPress developers.
 
 If you have not already started using Advanced Custom Fields, be sure to check it out; it will definitely be worth your while.

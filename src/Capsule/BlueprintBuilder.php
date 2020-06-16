@@ -171,6 +171,13 @@ class BlueprintBuilder
         return $result;
     }
 
+    /**
+     * Apply conditional logic transformation rules
+     *
+     * @param string $prefix
+     * @param array $acf
+     * @return array
+     */
     protected function processConditionalLogic($prefix, $acf)
     {
         $prefixer = new TransformConditionalLogic;

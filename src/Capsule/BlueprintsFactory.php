@@ -8,6 +8,11 @@ class BlueprintsFactory
 {
     use Singleton;
 
+    /**
+     * Stored blueprints
+     *
+     * @var array
+     */
     protected $blueprints = [];
 
     /**
