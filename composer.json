@@ -29,17 +29,16 @@
             "Windsor\\": "src/"
         },
         "files": [
-            "bootstrap/start.php",
             "src/helpers.php"
         ]
     },
     "scripts": {
         "test": [
-            "phpcs --extensions=php --standard=PSR2 src/ bootstrap/",
+            "phpcs --extensions=php --standard=PSR2 src/",
             "vendor/bin/phpunit tests --bootstrap tests/bootstrap.php"
         ],
         "fix": [
-            "phpcbf src/ bootstrap/"
+            "phpcbf src/"
         ]
     }
 }
