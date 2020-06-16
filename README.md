@@ -20,6 +20,14 @@ composer require jofrysutanto/windsor "^0.9"
 ```php
 require_once __DIR__ . '/vendor/autoload.php';
 ```
+- Register Windsor on ACF initialization. You may also do this in `functions.php` file:
+```php
+function register_acf_windsor()
+{
+    \Windsor\Capsule\Manager::make()->register();
+}
+add_action('acf/init', 'register_acf_windsor');
+```
 - Create YAML entry file at `[your-active-theme]/acf-fields/index.yaml`, where `[your-active-theme]` refers to your currently active Wordpress theme directory. At minimum, your entry file should contain:
 ```yaml
 fields: []

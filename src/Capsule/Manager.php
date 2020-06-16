@@ -1,6 +1,8 @@
 <?php
 namespace Windsor\Capsule;
 
+use Windsor\Parser\Finder;
+use Windsor\Support\Config;
 use Tightenco\Collect\Support\Arr;
 use Windsor\Support\RulesCollector;
 
@@ -26,6 +28,20 @@ class Manager
         $this->config = $config;
         $this->finder = $finder;
         $this->blueprints = $blueprints;
+    }
+
+    /**
+     * Create default instance
+     *
+     * @return \Windsor\Capsule\Manager
+     */
+    public static function make()
+    {
+        return new static(
+            Config::initialise(),
+            new Finder,
+            BlueprintsFactory::instance()
+        );
     }
 
     /**

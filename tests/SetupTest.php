@@ -1,9 +1,13 @@
 <?php
 
-use Windsor\Support\Config;
-
 final class SetupTest extends BaseTestCase
 {
+    public function testManageMake()
+    {
+        $instance = Windsor\Capsule\Manager::make();
+        $this->assertTrue($instance instanceof Windsor\Capsule\Manager);
+    }
+
     public function testReadSimpleYaml()
     {
         $manager = $this->makeManager([
@@ -12,15 +16,16 @@ final class SetupTest extends BaseTestCase
             ])
         ]);
         $this->assertEquals([
-            'title' => 'Simple Field Group',
-            'key' => 'simple_field_group',
-            'location' => (new \Windsor\Rules\GroupLocationRule)->getHiddenLocationRule(),
+            'title'    => 'Simple Field Group',
+            'key'      => 'simple_field_group',
+            'location' => (new \Windsor\Rules\GroupLocationRule)
+                ->getHiddenLocationRule(),
             'fields' => [
                 [
-                    'type' => 'text',
+                    'type'  => 'text',
                     'label' => 'Heading',
-                    'name' => 'heading',
-                    'key' => 'simple_field_group_heading'
+                    'name'  => 'heading',
+                    'key'   => 'simple_field_group_heading'
                 ]
             ]
         ], $manager->build()->first());
@@ -35,15 +40,15 @@ final class SetupTest extends BaseTestCase
         ]);
 
         $this->assertEquals([
-            'title' => 'Simple Field Group',
-            'key' => 'simple_field_group',
+            'title'    => 'Simple Field Group',
+            'key'      => 'simple_field_group',
             'location' => (new \Windsor\Rules\GroupLocationRule)->getHiddenLocationRule(),
             'fields' => [
                 [
-                    'type' => 'text',
+                    'type'  => 'text',
                     'label' => 'Heading',
-                    'name' => 'heading',
-                    'key' => 'simple_field_group_heading'
+                    'name'  => 'heading',
+                    'key'   => 'simple_field_group_heading'
                 ]
             ]
         ], $manager->build()->first());
