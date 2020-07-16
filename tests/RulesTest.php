@@ -25,7 +25,7 @@ final class RulesTest extends BaseTestCase
                 'type' => 'text',
                 'instructions' => 'My instructions'
             ]
-        ], $this->pluckFirst($manager, 'fields'));
+        ], $this->pluckFirst($manager, 'parsed.fields'));
     }
 
     public function testHiddenLocation()
@@ -37,7 +37,7 @@ final class RulesTest extends BaseTestCase
         ]);
         $this->assertEquals(
             (new \Windsor\Rules\GroupLocationRule)->getHiddenLocationRule(),
-            $this->pluckFirst($manager, 'location')
+            $this->pluckFirst($manager, 'parsed.location')
         );
     }
 
@@ -52,11 +52,11 @@ final class RulesTest extends BaseTestCase
         $helper = new \Windsor\Rules\HelperRule;
         $this->assertEquals(
             $helper->getDebugHtml('field_1'),
-            $this->pluckFirst($manager, 'fields.0.instructions')
+            $this->pluckFirst($manager, 'parsed.fields.0.instructions')
         );
         $this->assertEquals(
             'My sample instructions' . $helper->getDebugHtml('field_2'),
-            $this->pluckFirst($manager, 'fields.1.instructions')
+            $this->pluckFirst($manager, 'parsed.fields.1.instructions')
         );
     }
 
@@ -73,7 +73,7 @@ final class RulesTest extends BaseTestCase
                 'class' => 'my-css',
                 'id' => 'myUniqueId',
             ],
-            $this->pluckFirst($manager, 'fields.0.wrapper')
+            $this->pluckFirst($manager, 'parsed.fields.0.wrapper')
         );
     }
 
@@ -93,11 +93,11 @@ final class RulesTest extends BaseTestCase
         ]);
         $this->assertEquals(
             'foo',
-            $this->pluckFirst($manager, 'fields.0.instructions')
+            $this->pluckFirst($manager, 'parsed.fields.0.instructions')
         );
         $this->assertEquals(
             'foo',
-            $this->pluckFirst($manager, 'fields.1.instructions')
+            $this->pluckFirst($manager, 'parsed.fields.1.instructions')
         );
     }
 }

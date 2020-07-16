@@ -54,7 +54,14 @@ class Manager
     {
         $this->build()
             ->each(function ($parsed) {
-                acf_add_local_field_group($parsed);
+                if ($parsed['type'] === 'field-group') {
+                    acf_add_local_field_group($parsed['parsed']);
+                } elseif ($parsed['type'] === 'block') {
+                    if (function_exists('acf_register_block_type')) {
+                        acf_register_block_type(Arr::get($parsed, 'parsed.block'));
+                    }
+                    acf_add_local_field_group(Arr::get($parsed, 'parsed.field-group'));
+                }
             });
     }
 
@@ -79,32 +86,80 @@ class Manager
         foreach (['fields', 'pages'] as $type) {
             collect($this->getDefinitions($type))
                 ->each(function ($def) use ($results) {
-                    $parsed = $this->read($def);
-                    $results->push($parsed);
+                    $parsed = $this->readFieldGroup($def);
+                    $results->push([
+                        'type' => 'field-group',
+                        'parsed' => $parsed
+                    ]);
+                });
+        }
+        foreach (['blocks'] as $type) {
+            collect($this->getDefinitions($type))
+                ->each(function ($def) use ($results) {
+                    $parsed = $this->readBlock($def);
+                    $results->push([
+                        'type' => 'block',
+                        'parsed' => [
+                            'field-group' => $parsed['field-group'],
+                            'block' => $parsed['block'],
+                        ]
+                    ]);
                 });
         }
         return $results;
     }
 
     /**
-     * Read an ACF definition file
+     * Reads an ACF field group definition file
      *
      * @param string $def
      * @return array Array containing ACF fields as-per ACF definitions
      */
-    public function read($def)
+    public function readFieldGroup($def)
     {
-        $content = $this->finder->read($def);
+        if (is_string($def)) {
+            $def = $this->finder->read($def);
+        }
 
         $result = (new FieldGroup(FieldGroup::TYPE_FIELD_GROUP))
-            ->setDebug($this->config('debug', false))
             ->setRules(
                 new RulesCollector($this->config('rules', []))
             )
-            ->make($content)
+            ->setDebug($this->config('debug', false))
+            ->make($def)
             ->parsed();
 
         return $result;
+    }
+
+    /**
+     * Reads an ACF block definition file
+     *
+     * @param string $def
+     * @return array Array containing ACF fields as-per ACF definitions
+     */
+    public function readBlock($def)
+    {
+        $content = $this->finder->read($def);
+        $blockDefinition = (new Block())
+            ->setDebug($this->config('debug', false))
+            ->make($content)
+            ->parsed();
+        $fieldGroupsDefinition = array_merge($content, [
+            'location' => [
+                [
+                    [
+                        'param' => 'block',
+                        'operator' => '==',
+                        'value' => sprintf("acf/%s", $content['key'])
+                    ]
+                ]
+            ]
+        ]);
+        return [
+            'field-group' => $this->readFieldGroup($fieldGroupsDefinition),
+            'block' => $blockDefinition
+        ];
     }
 
     /**

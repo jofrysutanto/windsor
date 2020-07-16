@@ -11,15 +11,15 @@ final class KeysTest extends BaseTestCase
         ]);
         $this->assertEquals(
             '__repeat_sub_1',
-            $this->pluckFirst($manager, 'fields.0.sub_fields.0.key')
+            $this->pluckFirst($manager, 'parsed.fields.0.sub_fields.0.key')
         );
         $this->assertEquals(
             'sub_1',
-            $this->pluckFirst($manager, 'fields.0.sub_fields.0.name')
+            $this->pluckFirst($manager, 'parsed.fields.0.sub_fields.0.name')
         );
         $this->assertEquals(
             '__repeat_sub_2_repeat_sub_sub_1',
-            $this->pluckFirst($manager, 'fields.0.sub_fields.1.sub_fields.0.key')
+            $this->pluckFirst($manager, 'parsed.fields.0.sub_fields.1.sub_fields.0.key')
         );
     }
 
@@ -32,11 +32,11 @@ final class KeysTest extends BaseTestCase
         ]);
         $this->assertEquals(
             '__flex_layout_1',
-            $this->pluckFirst($manager, 'fields.1.layouts.0.key')
+            $this->pluckFirst($manager, 'parsed.fields.1.layouts.0.key')
         );
         $this->assertEquals(
             '__flex_layout_1_layout_sub_1',
-            $this->pluckFirst($manager, 'fields.1.layouts.0.sub_fields.0.key')
+            $this->pluckFirst($manager, 'parsed.fields.1.layouts.0.sub_fields.0.key')
         );
     }
 }

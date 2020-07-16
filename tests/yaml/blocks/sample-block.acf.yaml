@@ -1,0 +1,23 @@
+title: 'Sample Block'
+key: 'myblock'
+description: 'My sample block'
+category:
+  - common
+icon: 'book-alt'
+keywords: 'quote'
+mode: 'auto'
+render_template: template-parts/blocks/testimonial/testimonial.php
+supports:
+  align: true
+  mode: true
+  multiple: true
+fields:
+  field_text:
+    type: text
+    label: Field Text
+  field_textarea:
+    label: Field Textarea
+    type: 'textarea'
+    new_lines: 'br'
+    rows: 4
+
