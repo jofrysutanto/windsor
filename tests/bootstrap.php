@@ -2,6 +2,7 @@
 
 require "BaseTestCase.php";
 require "ChangeInstructionsToFoo.php";
+require "DummyHandler.php";
 
 if (! function_exists('apply_filters')) {
     /**

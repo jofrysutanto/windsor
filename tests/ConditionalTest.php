@@ -11,7 +11,7 @@ final class ConditionalTest extends BaseTestCase
         ]);
         $this->assertEquals(
             '__toggle',
-            $this->pluckFirst($manager, 'fields.1.conditional_logic.0.0.field')
+            $this->pluckFirst($manager, 'parsed.fields.1.conditional_logic.0.0.field')
         );
     }
 
@@ -24,10 +24,10 @@ final class ConditionalTest extends BaseTestCase
         ]);
         $this->assertEquals(
             '1',
-            $this->pluckFirst($manager, 'fields.1.conditional_logic.0.0.value')
+            $this->pluckFirst($manager, 'parsed.fields.1.conditional_logic.0.0.value')
         );
         $this->assertNotTrue(
-            $this->pluckFirst($manager, 'fields.1.conditional_logic.0.0.value')
+            $this->pluckFirst($manager, 'parsed.fields.1.conditional_logic.0.0.value')
         );
     }
 }

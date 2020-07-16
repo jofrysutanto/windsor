@@ -1,5 +1,7 @@
 <?php
 
+use Tightenco\Collect\Support\Arr;
+
 final class SetupTest extends BaseTestCase
 {
     public function testManageMake()
@@ -28,7 +30,7 @@ final class SetupTest extends BaseTestCase
                     'key'   => 'simple_field_group_heading'
                 ]
             ]
-        ], $manager->build()->first());
+        ], Arr::get($manager->build()->first(), 'parsed'));
     }
 
     public function testSubEntry()
@@ -51,6 +53,6 @@ final class SetupTest extends BaseTestCase
                     'key'   => 'simple_field_group_heading'
                 ]
             ]
-        ], $manager->build()->first());
+        ], Arr::get($manager->build()->first(), 'parsed'));
     }
 }

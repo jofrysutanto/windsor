@@ -5,10 +5,8 @@ use Tightenco\Collect\Support\Arr;
 use Windsor\Support\RulesCollector;
 use Windsor\Capsule\BlueprintsFactory;
 
-class FieldGroup
+class FieldGroup extends AbstractCapsule
 {
-    public static $namespace = [];
-
     const TYPE_FIELD_GROUP = 'FIELD_GROUP';
     const TYPE_REPEATER = 'REPEATER';
     const TYPE_GROUP = 'GROUP';
@@ -18,11 +16,6 @@ class FieldGroup
      * @var array Raw content of ACF definition file
      */
     protected $content;
-
-    /**
-     * @var array Valid ACF field according to ACF's standard
-     */
-    protected $parsed;
 
     /**
      * Type of field group
@@ -45,13 +38,6 @@ class FieldGroup
      */
     protected $rules;
 
-    /**
-     * Debug mode flag
-     *
-     * @var boolean
-     */
-    protected $debug = false;
-
     public function __construct($type)
     {
         $this->type = $type;
@@ -59,10 +45,7 @@ class FieldGroup
     }
 
     /**
-     * Create and parse group with given content
-     *
-     * @param array $content
-     * @return \Windsor\Capsule\FieldGroup
+     * @inheritdoc
      */
     public function make($content)
     {
@@ -77,32 +60,6 @@ class FieldGroup
                 }
             });
         });
-        return $this;
-    }
-
-    /**
-     * Retrieve parsed and valid ACF array
-     *
-     * @return array
-     */
-    public function parsed()
-    {
-        return $this->parsed;
-    }
-
-    /**
-     * Group and scope all fields to given namespace.
-     * The namespace is used to prefix all fields to ensure their uniqueness.
-     *
-     * @param string $namespace
-     * @param Closure $callback
-     * @return \Windsor\Capsule\FieldGroup
-     */
-    public function namespace($namespace, $callback)
-    {
-        static::$namespace[] = $namespace;
-        $callback($this);
-        array_pop(static::$namespace);
         return $this;
     }
 
@@ -157,8 +114,6 @@ class FieldGroup
         $parsedLayouts = [];
         $layouts = Arr::get($group, 'layouts', []);
         foreach ($layouts as $layoutKey => $layoutConfig) {
-            // dump($this->makeKey($layoutKey));
-            // dump($layoutKey);
             $parsedLayout = $this->makeField($layoutKey, $layoutConfig);
             // We don't need 'type' for layouts
             unset($parsedLayout['type']);
@@ -195,8 +150,8 @@ class FieldGroup
 
         if ($groupType = $this->getGroupType(Arr::get($value, 'type'))) {
             $value = (new FieldGroup($groupType))
-                ->setDebug($this->isDebugging())
                 ->setRules(new RulesCollector($this->rules))
+                ->setDebug($this->isDebugging())
                 ->make($value)
                 ->parsed();
         }
@@ -211,55 +166,15 @@ class FieldGroup
     }
 
     /**
-     * Generate unique key based on current active namespace
-     *
-     * @param string $key
-     * @return string
-     */
-    public function makeKey($key)
-    {
-        if (count(static::$namespace) <= 0) {
-            return $key;
-        }
-        if (starts_with($key, '~')) {
-            return ltrim($key, '~');
-        }
-        $namespace = array_values(array_slice(static::$namespace, -1))[0];
-        return $namespace . '_' . $key;
-    }
-
-    /**
-     * Set debug mode
-     *
-     * @param boolean $isDebugging
-     * @return \Windsor\Capsule\FieldGroup
-     */
-    public function setDebug($isDebugging = true)
-    {
-        $this->debug = $isDebugging;
-        return $this;
-    }
-
-    /**
      * Set transformation rules
      *
      * @param \Windsor\Support\RulesCollector $rules
-     * @return \Windsor\Capsule\FieldGroup
+     * @return self
      */
     public function setRules($rules)
     {
         $this->rules = $rules;
         return $this;
-    }
-
-    /**
-     * Check debug mode
-     *
-     * @return boolean
-     */
-    public function isDebugging()
-    {
-        return $this->debug;
     }
 
     /**

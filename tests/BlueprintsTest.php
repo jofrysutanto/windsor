@@ -17,18 +17,18 @@ final class BlueprintsTest extends BaseTestCase
                     'width' => 50
                 ]
             ],
-            $this->pluckFirst($manager, 'fields.0')
+            $this->pluckFirst($manager, 'parsed.fields.0')
         );
         $this->assertEquals(
             '__use_image',
-            $this->pluckFirst($manager, 'fields.2.conditional_logic.0.0.field')
+            $this->pluckFirst($manager, 'parsed.fields.2.conditional_logic.0.0.field')
         );
     }
 
     public function testExclude()
     {
         $manager = $this->getBlueprintManager('blueprints/test-exclude.acf.yaml');
-        $fieldKeys = Arr::pluck($this->pluckFirst($manager, 'fields'), 'name');
+        $fieldKeys = Arr::pluck($this->pluckFirst($manager, 'parsed.fields'), 'name');
         $this->assertEquals(
             ['use_image', 'image'],
             $fieldKeys
@@ -38,7 +38,7 @@ final class BlueprintsTest extends BaseTestCase
     public function testOnly()
     {
         $manager = $this->getBlueprintManager('blueprints/test-only.acf.yaml');
-        $fieldKeys = Arr::pluck($this->pluckFirst($manager, 'fields'), 'name');
+        $fieldKeys = Arr::pluck($this->pluckFirst($manager, 'parsed.fields'), 'name');
         $this->assertEquals(
             ['heading'],
             $fieldKeys
@@ -48,8 +48,8 @@ final class BlueprintsTest extends BaseTestCase
     public function testLayout()
     {
         $manager = $this->getBlueprintManager('blueprints/test-layout.acf.yaml');
-        $fieldKeys = Arr::pluck($this->pluckFirst($manager, 'fields'), 'name');
-        $fieldWidths = Arr::pluck($this->pluckFirst($manager, 'fields'), 'wrapper.width');
+        $fieldKeys = Arr::pluck($this->pluckFirst($manager, 'parsed.fields'), 'name');
+        $fieldWidths = Arr::pluck($this->pluckFirst($manager, 'parsed.fields'), 'wrapper.width');
         $this->assertEquals(
             [
                 'use_image',
@@ -73,7 +73,7 @@ final class BlueprintsTest extends BaseTestCase
     public function testMerge()
     {
         $manager = $this->getBlueprintManager('blueprints/test-layout.acf.yaml');
-        $fields = $this->pluckFirst($manager, 'fields');
+        $fields = $this->pluckFirst($manager, 'parsed.fields');
         $count = count($fields);
         $last = array_pop($fields);
         $this->assertEquals('description', $last['name']);
@@ -83,7 +83,7 @@ final class BlueprintsTest extends BaseTestCase
     public function testPrefix()
     {
         $manager = $this->getBlueprintManager('blueprints/test-prefix.acf.yaml');
-        $fields = $this->pluckFirst($manager, 'fields');
+        $fields = $this->pluckFirst($manager, 'parsed.fields');
         $this->assertEquals(
             'Merge Heading',
             $fields[0]['label']
