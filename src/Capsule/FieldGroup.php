@@ -143,6 +143,9 @@ class FieldGroup extends AbstractCapsule
     protected function makeField($key, $value)
     {
         $uniqueKey = $this->makeKey($key);
+        if ($staticKey = Arr::get($value, 'key')) {
+            $uniqueKey = $staticKey;
+        }
         $value = array_merge($value, [
             'name' => $key,
             'key'  => $uniqueKey

@@ -19,3 +19,12 @@ fields:
                     field: toggle
                     operator: '=='
                     value: true
+    heading_2:
+        type: text
+        label: Heading 2
+        conditional_logic:
+            -
+                -
+                    field: ~__toggle
+                    operator: '=='
+                    value: true

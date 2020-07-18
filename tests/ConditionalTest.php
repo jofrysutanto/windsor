@@ -13,6 +13,10 @@ final class ConditionalTest extends BaseTestCase
             '__toggle',
             $this->pluckFirst($manager, 'parsed.fields.1.conditional_logic.0.0.field')
         );
+        $this->assertEquals(
+            '__toggle',
+            $this->pluckFirst($manager, 'parsed.fields.2.conditional_logic.0.0.field')
+        );
     }
 
     public function testConditionalValue()
