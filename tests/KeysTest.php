@@ -39,4 +39,21 @@ final class KeysTest extends BaseTestCase
             $this->pluckFirst($manager, 'parsed.fields.1.layouts.0.sub_fields.0.key')
         );
     }
+
+    public function testStaticKeys()
+    {
+        $manager = $this->makeManager([
+            'finder' => $this->mockFinderEntry([
+                'fields' => ['keys-static.acf.yaml']
+            ])
+        ]);
+        $this->assertEquals(
+            'flex_1',
+            $this->pluckFirst($manager, 'parsed.fields.1.layouts.0.key')
+        );
+        $this->assertEquals(
+            'flex_1_sub_1',
+            $this->pluckFirst($manager, 'parsed.fields.1.layouts.0.sub_fields.0.key')
+        );
+    }
 }
