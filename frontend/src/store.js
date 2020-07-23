@@ -12,7 +12,7 @@ export const useGlobalState = createGlobalState(
       }
       let { field_group, yaml } = await repository.fetchSingle(key)
       loadedFields.value[key] = field_group
-      yamlFields.value[key] = yaml
+      yamlFields.value[key] = yaml.trim()
     }
 
     let isModeCompact = ref(false)

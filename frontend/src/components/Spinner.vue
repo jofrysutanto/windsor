@@ -25,24 +25,10 @@ export default {
   margin-bottom: 50px;
   border: 1px solid rgba(202, 202, 202, 0.6);
   border-radius: 50%;
-  border-top-color: rgb(31, 36, 48);;
+  border-top-color: rgb(31, 36, 48);
   animation: spin 0.6s linear infinite;
-  -webkit-animation: spin 0.6s linear infinite;
-  &--small {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 20px;
-  }
-  &--auto {
-    width: inherit;
-    height: inherit;
-    margin-bottom: 0;
-  }
 }
 @keyframes spin {
-  to { -webkit-transform: rotate(360deg); }
-}
-@-webkit-keyframes spin {
-  to { -webkit-transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
 </style>

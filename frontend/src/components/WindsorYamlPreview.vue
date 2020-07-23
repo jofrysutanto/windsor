@@ -1,8 +1,6 @@
 <template>
   <div class="relative">
-    <textarea ref="cmTextarea"
-      v-model="fieldYaml"
-      class="w-full"></textarea>
+    <pre class="px-6 py-4 mt-0 overflow-y-auto max-h-96 rounded-b-md"><code class="p-0 language-yaml" v-html="fieldYaml"></code></pre>
     <spinner v-if="isLoadingYaml" />
   </div>
 </template>
@@ -12,11 +10,6 @@ import { useGlobalState } from "./../store";
 import { toRefs, markRaw, computed, onMounted, ref, watch } from 'vue';
 import { useLoadYaml } from "./useLoadYaml";
 import Spinner from "./Spinner.vue";
-
-import 'codemirror/lib/codemirror.js';
-import 'codemirror/mode/yaml/yaml'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/ayu-mirage.css'
 
 const cmConfig = {
   mode: 'yaml',
@@ -47,12 +40,10 @@ export default {
     let cmTextarea = ref(null)
     let cm = ref(null)
     watch(fieldYaml, (newVal) => {
-      if (cm.value) {
-        cm.value.setValue(newVal)
-      }
+      window.Prism.highlightAll()
     }, { deep: true })
     onMounted(async () => {
-      cm.value = markRaw(CodeMirror.fromTextArea(cmTextarea.value, cmConfig))
+      window.Prism.highlightAll()
     })
     return {
       isModeCompact,
@@ -64,3 +55,6 @@ export default {
   }
 }
 </script>
+
+<style>
+</style>

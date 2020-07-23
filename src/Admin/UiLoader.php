@@ -80,8 +80,12 @@ class UiLoader
      */
     public function enqueueAdminAssets()
     {
+        wp_enqueue_style('windsor-prism-css', 'https://unpkg.com/prismjs@v1.x/themes/prism-tomorrow.css', []);
         wp_enqueue_style('windsor-css', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/dist/style.css', [], $this->version, 'all');
-        wp_enqueue_script('windsor-js', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/dist/index.js', [], $this->version, true);
+
+        wp_enqueue_script('windsor-prismjs-core', "https://unpkg.com/prismjs@v1.x/components/prism-core.min.js", [], null, true);
+        wp_enqueue_script('windsor-prismjs-autoloader', "https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js", [], null, true);
+        wp_enqueue_script('windsor-js', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/dist/index.js', ['windsor-prismjs-core', 'windsor-prismjs-autoloader'], $this->version, true);
     }
 
     /**
