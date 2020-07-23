@@ -5,6 +5,7 @@ use Windsor\Parser\Finder;
 use Windsor\Support\Config;
 use Tightenco\Collect\Support\Arr;
 use Windsor\Support\RulesCollector;
+use Windsor\Admin\UiLoader;
 
 class Manager
 {
@@ -52,6 +53,9 @@ class Manager
      */
     public function register()
     {
+        $ui = new UiLoader;
+        $ui->boot();
+
         $this->build()
             ->each(function ($parsed) {
                 if ($parsed['type'] === 'field-group') {

@@ -9,6 +9,11 @@ return [
     'debug' => false,
 
     /**
+     * Enable/disable admin interface
+     */
+    'ui' => true,
+
+    /**
      * The path where all ACF fields are stored
      */
     'path' => get_stylesheet_directory() . '/acf-fields',

@@ -1,0 +1,9 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+body.custom-fields_page_windsor #wpcontent {
+  padding-left: 0;
+}

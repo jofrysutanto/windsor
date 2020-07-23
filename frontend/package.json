@@ -1,0 +1,24 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && gulp build"
+  },
+  "dependencies": {
+    "@vueuse/core": "^4.0.0-beta.2",
+    "axios": "^0.19.2",
+    "codemirror": "^5.56.0",
+    "vue": "^3.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/ui": "^0.3.1",
+    "@vue/compiler-sfc": "^3.0.0-rc.1",
+    "autoprefixer": "^9.8.5",
+    "eslint": "^7.5.0",
+    "esm": "^3.2.25",
+    "gulp": "^4.0.2",
+    "tailwindcss": "^1.5.1",
+    "vite": "^1.0.0-rc.1"
+  }
+}

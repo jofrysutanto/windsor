@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" class="wp-toolbar">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/wp.css">
+  <title>Vite App</title>
+</head>
+<body class="wp-core-ui custom-fields_page_windsor">
+  <div id="wpwrap">
+    <div id="adminmenumain" role="navigation" aria-label="Main menu">
+      <a href="#wpbody-content" class="screen-reader-shortcut">Skip to main content</a>
+      <a href="#wp-toolbar" class="screen-reader-shortcut">Skip to toolbar</a>
+      <div id="adminmenuback"></div>
+      <div id="adminmenuwrap">
+          <ul id="adminmenu">
+          <li
+              class="wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard"
+              id="menu-dashboard"
+          >
+              <a
+              href="#"
+              class="wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard"
+              aria-haspopup="true"
+              >
+              <div class="wp-menu-arrow">
+                  <div></div>
+              </div>
+              <div class="wp-menu-image dashicons-before dashicons-admin-site-alt">
+                  <br>
+              </div>
+              <div class="wp-menu-name">Dashboard</div>
+              </a>
+          </li>
+          <li
+              class="current menu-top toplevel_page_windsor menu-top-last"
+              id="toplevel_page_windsor"
+          >
+              <a
+              href="#"
+              class="current menu-top toplevel_page_windsor menu-top-last"
+              aria-current="page"
+              >
+              <div class="wp-menu-arrow">
+                  <div></div>
+              </div>
+              <div class="wp-menu-image dashicons-before dashicons-upload">
+                  <br>
+              </div>
+              <div class="wp-menu-name">ACF Windsor</div>
+              </a>
+          </li>
+          </ul>
+      </div>
+    </div>
+    <div id="wpcontent">
+      <div id="wpadminbar">
+        <div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="Toolbar">
+          <ul id="wp-admin-bar-root-default" class="ab-top-menu">
+            <li id="wp-admin-bar-site-name" class="menupop">
+              <a class="ab-item" aria-haspopup="true" href="#">My Site</a>
+            </li>
+          </ul>
+          <ul id="wp-admin-bar-top-secondary" class="ab-top-secondary ab-top-menu">
+            <li id="wp-admin-bar-my-account" class="menupop with-avatar">
+              <a class="ab-item" aria-haspopup="true" href="#">
+                G'day,
+                <span class="display-name">Developer</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id="wpbody">
+        <div id="windsor"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
