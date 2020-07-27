@@ -8,10 +8,11 @@ export default new class {
     return data.field_groups
   }
 
-  async fetchSingle (fieldKey) {
+  async fetchSingle ({key, mode}) {
     let { data } = await ajax.post({
         action: 'windsor_load_single',
-        key: fieldKey
+        key,
+        mode
       })
     let { field_group, yaml } = data
     return { field_group, yaml }

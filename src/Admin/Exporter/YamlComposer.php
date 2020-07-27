@@ -1,5 +1,5 @@
 <?php
-namespace Windsor\Admin;
+namespace Windsor\Admin\Exporter;
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -29,7 +29,12 @@ class YamlComposer
      */
     public function generate()
     {
-        $result = Yaml::dump($this->field, 50, 2);
+        $packer = new FieldsPacker($this->field);
+        $result = $packer
+            ->setMode($this->mode)
+            ->pack();
+        // dump($result);
+        $result = Yaml::dump($result, 50, 2);
         return $result;
     }
 }

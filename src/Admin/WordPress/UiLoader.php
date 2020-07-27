@@ -1,5 +1,7 @@
 <?php
-namespace Windsor\Admin;
+namespace Windsor\Admin\WordPress;
+
+use Windsor\Admin\WordPress\AjaxHandler;
 
 class UiLoader
 {
@@ -60,13 +62,11 @@ class UiLoader
         if (!current_user_can('manage_options')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
-        // $key = 'group_5edb6bb061aef';
-        // // load field group
-        // $field_group = acf_get_field_group($key);
-        // // load fields
-        // $field_group['fields'] = acf_get_fields($field_group);
-        // // prepare for export
-        // $field_group = acf_prepare_field_group_for_export($field_group);
+        $key = 'group_5edb6bb061aef';
+        $result = \Windsor\Admin\WordPress\AjaxHandler::instance()
+            ->loadFieldGroupForExport($key);
+        $yaml = new \Windsor\Admin\Exporter\YamlComposer($result, 'compact');
+        $yaml->generate();
 
         // Our Vite app register itself to this element
         // and let it take care of the rest
@@ -81,11 +81,11 @@ class UiLoader
     public function enqueueAdminAssets()
     {
         wp_enqueue_style('windsor-prism-css', 'https://unpkg.com/prismjs@v1.x/themes/prism-tomorrow.css', []);
-        wp_enqueue_style('windsor-css', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/dist/style.css', [], $this->version, 'all');
+        wp_enqueue_style('windsor-css', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/style.css', [], $this->version, 'all');
 
         wp_enqueue_script('windsor-prismjs-core', "https://unpkg.com/prismjs@v1.x/components/prism-core.min.js", [], null, true);
         wp_enqueue_script('windsor-prismjs-autoloader', "https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js", [], null, true);
-        wp_enqueue_script('windsor-js', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/dist/index.js', ['windsor-prismjs-core', 'windsor-prismjs-autoloader'], $this->version, true);
+        wp_enqueue_script('windsor-js', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/index.js', ['windsor-prismjs-core', 'windsor-prismjs-autoloader'], $this->version, true);
     }
 
     /**

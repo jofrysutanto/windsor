@@ -1,8 +1,11 @@
 <?php
-namespace Windsor\Admin;
+namespace Windsor\Admin\WordPress;
 
 use Windsor\Support\Singleton;
+use Windsor\Admin\Exporter\YamlComposer;
 use Tightenco\Collect\Support\Collection;
+use Windsor\Admin\Exporter\FieldGroupsStore;
+use Windsor\Admin\Exporter\FluentFieldGroup;
 
 class AjaxHandler
 {
@@ -44,7 +47,9 @@ class AjaxHandler
         $results = $this->store->query();
         $collection = new Collection;
         foreach ($results as $result) {
-            $collection->push(FluentFieldGroup::fromRawFieldGroup($result));
+            $collection->push(array_merge($result, [
+                'count' => acf_get_field_count($result)
+            ]));
         }
         return wp_send_json([
             'field_groups' => $collection->toArray()
@@ -59,11 +64,13 @@ class AjaxHandler
     public function ajaxLoadSingle()
     {
         $key = isset($_POST['key']) ? $_POST['key'] : null;
+        $mode = isset($_POST['mode']) ? $_POST['mode'] : 'full';
         if (!$key) {
             return wp_send_json_error();
         }
         $result = $this->loadFieldGroupForExport($key);
-        $yaml = new YamlComposer($result);
+        $yaml = new YamlComposer($result, $mode);
+        // sleep(2);
         return wp_send_json([
             'field_group' => $result,
             'yaml' => $yaml->generate(),
@@ -76,13 +83,10 @@ class AjaxHandler
      * @param string $key
      * @return array
      */
-    protected function loadFieldGroupForExport($key)
+    public function loadFieldGroupForExport($key)
     {
-        // load field group
         $field_group = acf_get_field_group($key);
-        // load fields
         $field_group['fields'] = acf_get_fields($field_group);
-        // prepare for export
         return acf_prepare_field_group_for_export($field_group);
     }
 }

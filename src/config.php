@@ -11,7 +11,7 @@ return [
     /**
      * Enable/disable admin interface
      */
-    'ui' => true,
+    'ui' => false,
 
     /**
      * The path where all ACF fields are stored

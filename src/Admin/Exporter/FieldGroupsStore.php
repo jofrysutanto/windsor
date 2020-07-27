@@ -1,10 +1,16 @@
 <?php
-namespace Windsor\Admin;
+namespace Windsor\Admin\Exporter;
 
 use Tightenco\Collect\Support\Arr;
 
 class FieldGroupsStore
 {
+
+    /**
+     * Query available field groups for exporting
+     *
+     * @return array
+     */
     public function query()
     {
         $groups = acf_get_field_groups();

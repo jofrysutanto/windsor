@@ -5,7 +5,7 @@ use Windsor\Parser\Finder;
 use Windsor\Support\Config;
 use Tightenco\Collect\Support\Arr;
 use Windsor\Support\RulesCollector;
-use Windsor\Admin\UiLoader;
+use Windsor\Admin\WordPress\UiLoader;
 
 class Manager
 {
@@ -32,14 +32,17 @@ class Manager
     }
 
     /**
-     * Create default instance
+     * Create default instance with optional configurations
+     * @link https://windsor-docs.netlify.app/configurations.html
+     *
+     * @param array $config Additional configuration.
      *
      * @return \Windsor\Capsule\Manager
      */
-    public static function make()
+    public static function make(array $config = [])
     {
         return new static(
-            Config::initialise(),
+            Config::initialise($config),
             new Finder,
             BlueprintsFactory::instance()
         );
@@ -53,8 +56,10 @@ class Manager
      */
     public function register()
     {
-        $ui = new UiLoader;
-        $ui->boot();
+        if ($this->config('ui')) {
+            $ui = new UiLoader;
+            $ui->boot();
+        }
 
         $this->build()
             ->each(function ($parsed) {

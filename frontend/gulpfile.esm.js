@@ -6,7 +6,7 @@ const statP = promisify(stat)
 
 const config = {
   src: './dist/_assets',
-  output: './dist/',
+  output: './assets/',
   copy: [
     'index.js',
     'style.css',
