@@ -67,9 +67,10 @@ If you have existing field groups created through ACF interface, you can easily 
 ```php
 function register_acf_windsor()
 {
-    \Windsor\Capsule\Manager::make()->register([
-      'ui' => true
-    ]);
+    \Windsor\Capsule\Manager::make([
+        'ui' => true
+      ])
+      ->register();
 }
 add_action('acf/init', 'register_acf_windsor');
 ```
