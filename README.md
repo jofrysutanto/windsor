@@ -62,6 +62,22 @@ blocks: []
   - You have successfully registered a new field group which will be made available when creating a new default page.
 - Check out our full documentation below. Now go and create beautiful ACF fields!
 
+## Migrating Existing Fields
+If you have existing field groups created through ACF interface, you can easily export them out to YAML by enabling the exporter through `ui` configuration when registering Windsor:
+```php
+function register_acf_windsor()
+{
+    \Windsor\Capsule\Manager::make()->register([
+      'ui' => true
+    ]);
+}
+add_action('acf/init', 'register_acf_windsor');
+```
+
+Once enabled, you access the exporter within WordPress backend by clicking on Custom Fields > Export to YAML link in sidebar.
+
+More information about this tool can be found in [configurations section](https://windsor-docs.netlify.app/configurations.html#ui).
+
 ## Learn More
 Check out full documentations at [https://windsor-docs.netlify.app/](https://windsor-docs.netlify.app/)
 
