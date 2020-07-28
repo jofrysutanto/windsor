@@ -1,6 +1,7 @@
 <?php
 namespace Windsor\Admin\WordPress;
 
+use Tightenco\Collect\Support\Arr;
 use Windsor\Admin\WordPress\AjaxHandler;
 
 class UiLoader
@@ -18,6 +19,18 @@ class UiLoader
      * @var string
      */
     protected $adminHook;
+
+    /**
+     * Determine if Windsor assets are enqueued as inline
+     *
+     * @var boolean
+     */
+    protected $shouldInlineAssets = false;
+
+    public function __construct($config = [])
+    {
+        $this->shouldInlineAssets = Arr::get($config, 'inline_assets') === true;
+    }
 
     /**
      * All hooks and filters are registered through this method
@@ -63,12 +76,6 @@ class UiLoader
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        // $key = 'group_5edb6bb061aef';
-        // $result = \Windsor\Admin\WordPress\AjaxHandler::instance()
-        //     ->loadFieldGroupForExport($key);
-        // $yaml = new \Windsor\Admin\Exporter\YamlComposer($result, 'compact');
-        // $yaml->generate();
-
         // Our Vite app register itself to this element
         // and let it take care of the rest
         echo '<div id="windsor"></div>';
@@ -82,7 +89,12 @@ class UiLoader
     public function enqueueAdminAssets()
     {
         wp_enqueue_style('windsor-prism-css', 'https://unpkg.com/prismjs@v1.x/themes/prism-tomorrow.css', []);
-        wp_enqueue_style('windsor-css', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/style.css', [], $this->version, 'all');
+
+        if ($this->shouldInlineAssets) {
+            wp_add_inline_style('windsor-prism-css', file_get_contents(__DIR__ . '/../../../frontend/assets/style.css'));
+        } else {
+            wp_enqueue_style('windsor-css', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/style.css', [], $this->version, 'all');
+        }
 
         $jsDependencies = [
             'windsor-prismjs-core'       => 'https://unpkg.com/prismjs@v1.x/components/prism-core.min.js',
@@ -92,13 +104,18 @@ class UiLoader
         foreach ($jsDependencies as $key => $cdn) {
             wp_enqueue_script($key, $cdn, [], null, true);
         }
-        wp_enqueue_script(
-            'windsor-js',
-            get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/index.js',
-            array_keys($jsDependencies),
-            $this->version,
-            true
-        );
+        if ($this->shouldInlineAssets) {
+            $handle = array_keys($jsDependencies)[count($jsDependencies) - 1];
+            wp_add_inline_script($handle, file_get_contents(__DIR__ . '/../../../frontend/assets/index.js'));
+        } else {
+            wp_enqueue_script(
+                'windsor-js',
+                get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/index.js',
+                array_keys($jsDependencies),
+                $this->version,
+                true
+            );
+        }
     }
 
     /**

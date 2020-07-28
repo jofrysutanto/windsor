@@ -9,7 +9,10 @@ return [
     'debug' => false,
 
     /**
-     * Enable/disable admin interface
+     * Enable/disable admin interface using boolean value.
+     * Optionally receive an array to modify admin pages behaviour
+     * - 'enabled' Same effect as `'ui' => true`
+     * - 'inline_assets' Use this to inline admin styles and scripts if path to vendor/ is not public.
      */
     'ui' => false,
 

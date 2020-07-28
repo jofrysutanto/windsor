@@ -56,11 +56,7 @@ class Manager
      */
     public function register()
     {
-        if ($this->config('ui')) {
-            $ui = new UiLoader;
-            $ui->boot();
-        }
-
+        $this->maybeLoadUI();
         $this->build()
             ->each(function ($parsed) {
                 if ($parsed['type'] === 'field-group') {
@@ -169,6 +165,27 @@ class Manager
             'field-group' => $this->readFieldGroup($fieldGroupsDefinition),
             'block' => $blockDefinition
         ];
+    }
+
+    /**
+     * Optionally initiate UI (Admin) components of Windsor
+     *
+     * @return void
+     */
+    protected function maybeLoadUI()
+    {
+        $uiConfig = $this->config('ui');
+        if (!$uiConfig) {
+            return;
+        }
+        if (!is_array($uiConfig)) {
+            $uiConfig = [];
+        }
+        if (Arr::get($uiConfig, 'enabled') === false) {
+            return;
+        }
+        $ui = new UiLoader($uiConfig);
+        $ui->boot($uiConfig);
     }
 
     /**
