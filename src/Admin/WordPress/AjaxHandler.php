@@ -2,6 +2,8 @@
 namespace Windsor\Admin\WordPress;
 
 use Windsor\Support\Singleton;
+use Symfony\Component\Yaml\Yaml;
+use Tightenco\Collect\Support\Arr;
 use Windsor\Admin\Exporter\YamlComposer;
 use Tightenco\Collect\Support\Collection;
 use Windsor\Admin\Exporter\FieldGroupsStore;
@@ -35,6 +37,9 @@ class AjaxHandler
 
         add_action('wp_ajax_nopriv_windsor_load_single', [$this, 'ajaxLoadSingle']);
         add_action('wp_ajax_windsor_load_single', [$this, 'ajaxLoadSingle']);
+
+        add_action('wp_ajax_nopriv_windsor_export', [$this, 'ajaxExport']);
+        add_action('wp_ajax_windsor_export', [$this, 'ajaxExport']);
     }
 
     /**
@@ -70,10 +75,52 @@ class AjaxHandler
         }
         $result = $this->loadFieldGroupForExport($key);
         $yaml = new YamlComposer($result, $mode);
-        // sleep(2);
         return wp_send_json([
             'field_group' => $result,
             'yaml' => $yaml->generate(),
+        ]);
+    }
+
+    /**
+     * Handle AJAX request to export available field groups
+     *
+     * @return mixed
+     */
+    public function ajaxExport()
+    {
+        $mode = isset($_POST['mode']) ? $_POST['mode'] : 'full';
+        $hasIndex = isset($_POST['include_index']) ? $_POST['include_index'] === 'true' : true;
+        $shouldRename = isset($_POST['rename_files']) ? $_POST['rename_files'] === 'true' : true;
+        $groups = $this->store->query();
+        $result = [];
+        $filenames = [];
+        foreach ($groups as $group) {
+            $fieldGroup = $this->loadFieldGroupForExport(Arr::get($group, 'key'));
+            $yaml = (new YamlComposer($fieldGroup, $mode))->generate();
+            $filename = sprintf(
+                "%s.acf.yaml",
+                ($shouldRename ? sanitize_title_with_dashes($group['title']) : $group['key'])
+            );
+            $filenames[] = $filename;
+            $result[] = [
+                'filename' => $filename,
+                'content' => $yaml
+            ];
+        }
+        if ($hasIndex) {
+            $indexContent = [
+                'fields'     => [],
+                'blueprints' => [],
+                'blocks'     => [],
+                'pages'      => $filenames,
+            ];
+            $result[] = [
+                'filename' => 'index.yaml',
+                'content' => Yaml::dump($indexContent, 50, 2)
+            ];
+        }
+        return wp_send_json([
+            'fields' => $result
         ]);
     }
 

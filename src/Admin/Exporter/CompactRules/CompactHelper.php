@@ -5,6 +5,14 @@ use Tightenco\Collect\Support\Arr;
 
 trait CompactHelper
 {
+
+    /**
+     * Unset given keys when the values are empty
+     *
+     * @param array $array
+     * @param array $keys
+     * @return array
+     */
     protected function unsetIfEmpty($array, $keys)
     {
         if (!is_array($keys)) {
@@ -22,6 +30,13 @@ trait CompactHelper
         return $array;
     }
 
+    /**
+     * Unset given keys when values are zero
+     *
+     * @param array $array
+     * @param array $keys
+     * @return array
+     */
     protected function unsetIfZero($array, $keys)
     {
         if (!is_array($keys)) {
@@ -39,6 +54,16 @@ trait CompactHelper
         return $array;
     }
 
+    /**
+     * Unset given keys when the value match given value
+     * ```
+     * unsetIfVal(['foo' => 'bar'], ['foo' => 'bar']) => returns [];
+     * ```
+     *
+     * @param array $array
+     * @param array $keyValues
+     * @return array
+     */
     protected function unsetIfVal($array, $keyValues)
     {
         foreach ($keyValues as $key => $value) {

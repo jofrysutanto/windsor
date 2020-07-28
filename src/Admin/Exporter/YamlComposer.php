@@ -33,7 +33,6 @@ class YamlComposer
         $result = $packer
             ->setMode($this->mode)
             ->pack();
-        // dump($result);
         $result = Yaml::dump($result, 50, 2);
         return $result;
     }

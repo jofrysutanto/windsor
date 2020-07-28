@@ -5,10 +5,10 @@
         'h-72': isLoadingYaml
       }"
       class="px-6 py-4 mt-0 overflow-y-auto max-h-96 language-yaml rounded-b-md"><code class="p-0 language-yaml" v-html="fieldYaml"></code></pre>
-    <div v-if="clipSupported && !isLoadingYaml"
+    <div v-if="!isLoadingYaml"
       class="absolute top-0 right-0 p-2">
       <button
-        @click="clipCopy(fieldYaml)"
+        @click="copyToClipboard(fieldYaml)"
         type="button"
         class="inline-flex items-center justify-center p-1 bg-transparent rounded-sm hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray">
         <svg
@@ -19,7 +19,7 @@
     <spinner v-if="isLoadingYaml" />
     <div class="absolute inset-0 flex items-center justify-center" v-if="hasError">
       <div class="max-w-sm px-4 py-2 mx-auto text-center text-white bg-red-500 rounded-sm shadow-lg">
-        Unable to load YAML.
+        Whoops sorry, something went wrong.
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
 
 <script>
 import { useGlobalState } from "./../store";
-import { useClipboard } from "@vueuse/core";
+import { copyToClipboard } from "./../utils/clipboard";
 import { toRefs, markRaw, onMounted, ref, watch } from 'vue';
 import { useLoadYaml } from "./useLoadYaml";
 import Spinner from "./Spinner.vue";
@@ -57,12 +57,13 @@ export default {
   setup (props) {
     const { fieldKey } = toRefs(props)
     let { fieldYaml, isLoadingYaml, hasError } = useLoadYaml(fieldKey)
-    const { text, copy, supported } = useClipboard()
     let cmTextarea = ref(null)
     let cm = ref(null)
+
     watch(fieldYaml, (newVal) => {
       window.Prism.highlightAll()
     }, { deep: true })
+
     onMounted(() => {
       setTimeout(() => {
         window.Prism.highlightAll()
@@ -73,10 +74,8 @@ export default {
       cmTextarea,
       isLoadingYaml,
       hasError,
-      clipText: text,
-      clipCopy: copy,
-      clipSupported: supported,
-      fieldYaml
+      fieldYaml,
+      copyToClipboard,
     }
   }
 }

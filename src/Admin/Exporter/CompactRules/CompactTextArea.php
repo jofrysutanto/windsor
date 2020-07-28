@@ -1,7 +1,7 @@
 <?php
 namespace Windsor\Admin\Exporter\CompactRules;
 
-class CompactImage
+class CompactTextArea
 {
     use CompactHelper;
 
@@ -14,15 +14,9 @@ class CompactImage
     public function run($array)
     {
         $array = $this->unsetIfEmpty($array, [
-            'min_width',
-            'min_height',
-            'min_size',
-            'max_width',
-            'max_height',
-            'max_size',
-            'mime_types',
+            'rows',
+            'new_lines',
         ]);
-
         return $array;
     }
 }

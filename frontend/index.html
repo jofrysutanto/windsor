@@ -79,8 +79,11 @@
       </div>
     </div>
   </div>
+  <!-- These libraries are unfortunately not Vite-compatible and has to be loaded manually via CDN -->
+  <!-- These libraries will have to be enqueued in Wordpress, see UiLoader.php -->
   <script src="https://unpkg.com/prismjs@v1.x/components/prism-core.min.js"></script>
 	<script src="https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js"></script>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

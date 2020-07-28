@@ -18,4 +18,15 @@ export default new class {
     return { field_group, yaml }
   }
 
+  async export ({ mode, include_index = true, rename_files = true }) {
+    let { data } = await ajax.post({
+      action: 'windsor_export',
+      mode,
+      include_index,
+      rename_files,
+    })
+    let { fields } = data
+    return { fields }
+  }
+
 }

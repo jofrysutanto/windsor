@@ -2,7 +2,6 @@
 namespace Windsor\Admin\Exporter;
 
 use Tightenco\Collect\Support\Arr;
-use Tightenco\Collect\Support\Collection;
 
 class FieldsPacker
 {
@@ -20,7 +19,14 @@ class FieldsPacker
     protected $mode = 'full';
 
     protected $compactRulesByType = [
-        'image' => CompactRules\CompactImage::class,
+        // Field Types
+        'textarea'         => CompactRules\CompactTextArea::class,
+        'image'            => CompactRules\CompactImage::class,
+        'true_false'       => CompactRules\CompactTrueFalse::class,
+        // Layout
+        'tab'              => CompactRules\CompactTab::class,
+        'repeater'         => CompactRules\CompactRepeater::class,
+        'flexible_content' => CompactRules\CompactFlexibleContent::class,
     ];
 
     public function __construct($raw = [])
@@ -84,6 +90,9 @@ class FieldsPacker
             })
             ->transformAsMutable(function (MutableField $item) {
                 return $item
+                    ->modify(function ($fieldArray) {
+                        return $this->expandConditionalLogic($fieldArray);
+                    })
                     ->modifyAsMutable(function (MutableField $fieldConfig) {
                         switch ($fieldConfig->get('type')) {
                             case 'repeater':
@@ -94,6 +103,7 @@ class FieldsPacker
                                     });
                                 break;
                             case 'flexible_content':
+                            $fieldConfig->shiftToLast('layouts');
                             $fieldConfig['layouts'] = (new MutableFieldCollection($fieldConfig['layouts']))
                                 ->associateBy('name')
                                 ->transformAsMutable(function (MutableField $layoutConfig) {
@@ -101,8 +111,17 @@ class FieldsPacker
                                         ->shiftToLast('sub_fields')
                                         ->modify('sub_fields', function ($layoutSubFields) {
                                             return $this->packFields($layoutSubFields);
-                                        });
-                                });
+                                        })
+                                        ->when($this->isCompact(), function (MutableField $mutable) {
+                                            $mutable->compactify([
+                                                CompactRules\CompactLayout::class
+                                            ]);
+                                        })
+                                        // ->dump()
+                                        ->toArray();
+                                })
+                                ->toArray();
+                            // dump($fieldConfig['layouts']);
                                 break;
                             default:
                                 break;
@@ -136,5 +155,35 @@ class FieldsPacker
             $rules = array_merge($rules, $typeRules);
         }
         return $rules;
+    }
+
+    /**
+     * Prefix all conditional logic field to use expanded keys
+     *
+     * @param array $array
+     * @return array
+     */
+    protected function expandConditionalLogic($array)
+    {
+        if (!Arr::has($array, 'conditional_logic')) {
+            return $array;
+        }
+        $conditions = Arr::get($array, 'conditional_logic');
+        if (!is_array($conditions)) {
+            return $array;
+        }
+        if (count($conditions) <= 0) {
+            return $array;
+        }
+        foreach ($conditions as $and => $andContent) {
+            foreach ($andContent as $or => $value) {
+                Arr::set(
+                    $array,
+                    sprintf('conditional_logic.%s.%s.field', $and, $or),
+                    '~' . Arr::get($value, 'field')
+                );
+            }
+        }
+        return $array;
     }
 }

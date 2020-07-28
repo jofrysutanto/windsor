@@ -1,7 +1,7 @@
 <?php
 namespace Windsor\Admin\Exporter\CompactRules;
 
-class CompactFieldGroup
+class CompactRepeater
 {
     use CompactHelper;
 
@@ -14,16 +14,16 @@ class CompactFieldGroup
     public function run($array)
     {
         $array = $this->unsetIfEmpty($array, [
-            'description',
-            'hide_on_screen',
+            'collapsed',
+            'button_label',
+            'min',
+            'max',
         ]);
         $array = $this->unsetIfZero($array, [
-            'menu_order',
+            'min',
+            'max',
         ]);
-        $array = $this->unsetIfVal($array, [
-            'label_placement' => 'top',
-            'instruction_placement' => 'label',
-        ]);
+
         return $array;
     }
 }

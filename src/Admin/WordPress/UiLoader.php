@@ -62,11 +62,12 @@ class UiLoader
         if (!current_user_can('manage_options')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
-        $key = 'group_5edb6bb061aef';
-        $result = \Windsor\Admin\WordPress\AjaxHandler::instance()
-            ->loadFieldGroupForExport($key);
-        $yaml = new \Windsor\Admin\Exporter\YamlComposer($result, 'compact');
-        $yaml->generate();
+
+        // $key = 'group_5edb6bb061aef';
+        // $result = \Windsor\Admin\WordPress\AjaxHandler::instance()
+        //     ->loadFieldGroupForExport($key);
+        // $yaml = new \Windsor\Admin\Exporter\YamlComposer($result, 'compact');
+        // $yaml->generate();
 
         // Our Vite app register itself to this element
         // and let it take care of the rest
@@ -83,9 +84,21 @@ class UiLoader
         wp_enqueue_style('windsor-prism-css', 'https://unpkg.com/prismjs@v1.x/themes/prism-tomorrow.css', []);
         wp_enqueue_style('windsor-css', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/style.css', [], $this->version, 'all');
 
-        wp_enqueue_script('windsor-prismjs-core', "https://unpkg.com/prismjs@v1.x/components/prism-core.min.js", [], null, true);
-        wp_enqueue_script('windsor-prismjs-autoloader', "https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js", [], null, true);
-        wp_enqueue_script('windsor-js', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/index.js', ['windsor-prismjs-core', 'windsor-prismjs-autoloader'], $this->version, true);
+        $jsDependencies = [
+            'windsor-prismjs-core'       => 'https://unpkg.com/prismjs@v1.x/components/prism-core.min.js',
+            'windsor-prismjs-autoloader' => 'https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js',
+            'windsor-jszip'              => 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js',
+        ];
+        foreach ($jsDependencies as $key => $cdn) {
+            wp_enqueue_script($key, $cdn, [], null, true);
+        }
+        wp_enqueue_script(
+            'windsor-js',
+            get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/index.js',
+            array_keys($jsDependencies),
+            $this->version,
+            true
+        );
     }
 
     /**

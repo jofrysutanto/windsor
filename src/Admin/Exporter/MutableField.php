@@ -2,7 +2,6 @@
 namespace Windsor\Admin\Exporter;
 
 use Windsor\Support\Fluent;
-use Tightenco\Collect\Support\Collection;
 
 class MutableField extends Fluent
 {
@@ -73,6 +72,17 @@ class MutableField extends Fluent
         foreach ($rules as $rule) {
             $this->attributes = (new $rule)->run($this->attributes);
         }
+        return $this;
+    }
+
+    /**
+     * Dump current attributes, for debugging purpose
+     *
+     * @return self
+     */
+    public function dump()
+    {
+        dump($this->attributes);
         return $this;
     }
 }

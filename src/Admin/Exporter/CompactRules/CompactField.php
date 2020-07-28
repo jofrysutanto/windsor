@@ -7,6 +7,12 @@ class CompactField
 {
     use CompactHelper;
 
+    /**
+     * Run this rule
+     *
+     * @param array $array
+     * @return array
+     */
     public function run($array)
     {
         $array = $this->unsetIfEmpty($array, [
@@ -22,10 +28,16 @@ class CompactField
             'conditional_logic',
         ]);
         $array = $this->unsetEmptyWrapper($array);
-        $array = $this->expandConditionalLogic($array);
         return $array;
     }
 
+    /**
+     * Unset empty wrapper key with empty values,
+     * or completely remove wrapper key if empty
+     *
+     * @param array $array
+     * @return array
+     */
     protected function unsetEmptyWrapper($array)
     {
         if (!Arr::has($array, 'wrapper')) {
@@ -45,27 +57,6 @@ class CompactField
             unset($array['wrapper']);
         } else {
             $array['wrapper'] = $result;
-        }
-        return $array;
-    }
-
-    protected function expandConditionalLogic($array)
-    {
-        if (!Arr::has($array, 'conditional_logic')) {
-            return $array;
-        }
-        $conditions = Arr::get($array, 'conditional_logic', []);
-        if (count($conditions) <= 0) {
-            return $array;
-        }
-        foreach ($conditions as $and => $andContent) {
-            foreach ($andContent as $or => $value) {
-                Arr::set(
-                    $array,
-                    sprintf('conditional_logic.%s.%s.field', $and, $or),
-                    '~' . Arr::get($value, 'field')
-                );
-            }
         }
         return $array;
     }

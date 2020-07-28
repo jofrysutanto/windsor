@@ -1,7 +1,7 @@
 <?php
 namespace Windsor\Admin\Exporter\CompactRules;
 
-class CompactFieldGroup
+class CompactTrueFalse
 {
     use CompactHelper;
 
@@ -14,15 +14,12 @@ class CompactFieldGroup
     public function run($array)
     {
         $array = $this->unsetIfEmpty($array, [
-            'description',
-            'hide_on_screen',
+            'ui_on_text',
+            'ui_off_text',
+            'message',
         ]);
         $array = $this->unsetIfZero($array, [
-            'menu_order',
-        ]);
-        $array = $this->unsetIfVal($array, [
-            'label_placement' => 'top',
-            'instruction_placement' => 'label',
+            'ui',
         ]);
         return $array;
     }

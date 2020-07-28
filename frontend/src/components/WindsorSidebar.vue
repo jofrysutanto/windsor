@@ -15,8 +15,8 @@
             </a>
           </div>
         </div>
-        <div class="flex flex-col transition duration-150 ease-in-out border-b border-gray-200 divide-y divide-y-gray-200 hover:bg-gray-50">
-          <div class="flex p-4 cursor-pointer group"
+        <div class="flex flex-col transition duration-150 ease-in-out border-gray-200 divide-y divide-y-gray-200">
+          <div class="flex p-4 cursor-pointer group hover:bg-gray-50"
             @click="changeMode(!isModeCompact)">
             <div class="flex-shrink-0">
               <span role="checkbox"
@@ -43,12 +43,74 @@
               </p>
             </div>
           </div>
+          <template v-if="isShowingAllSettings">
+          <div class="flex p-4 cursor-pointer group hover:bg-gray-50"
+            @click="isFriendlyFilename = !isFriendlyFilename">
+            <div class="flex-shrink-0">
+              <span role="checkbox"
+                tabindex="0"
+                :aria-checked="isFriendlyFilename"
+                @keyup.enter="isFriendlyFilename = !isFriendlyFilename"
+                class="relative inline-flex items-center justify-center flex-shrink-0 w-10 h-5 cursor-pointer group focus:outline-none">
+                <!-- On: "bg-indigo-600", Off: "bg-gray-200" -->
+                <span aria-hidden="true"
+                  :class="isFriendlyFilename ? 'bg-wp-blue' : 'bg-gray-200'"
+                  class="absolute h-4 mx-auto transition-colors duration-200 ease-in-out bg-gray-200 rounded-full w-9"></span>
+                <!-- On: "translate-x-5", Off: "translate-x-0" -->
+                <span aria-hidden="true"
+                  :class="isFriendlyFilename ? 'translate-x-5' : 'translate-x-0'"
+                  class="absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white border border-gray-200 rounded-full shadow group-focus:shadow-outline group-focus:border-blue-300"></span>
+              </span>
+            </div>
+            <div class="pl-2">
+              <h4 class="text-sm font-medium text-black transition duration-150 ease-in-out group-hover:text-wp-blue">
+                Rename YAML fields
+              </h4>
+              <p class="mt-1 text-xs text-gray-600">
+                Generated YAML filenames are inferred from the title. When disabled, unique keys are used: <i>group_xxxxx.acf.yaml</i>.
+              </p>
+            </div>
+          </div>
+          <div class="flex p-4 cursor-pointer group hover:bg-gray-50"
+            @click="shouldIncludeIndex = !shouldIncludeIndex">
+            <div class="flex-shrink-0">
+              <span role="checkbox"
+                tabindex="0"
+                :aria-checked="shouldIncludeIndex"
+                @keyup.enter="shouldIncludeIndex = !shouldIncludeIndex"
+                class="relative inline-flex items-center justify-center flex-shrink-0 w-10 h-5 cursor-pointer group focus:outline-none">
+                <!-- On: "bg-indigo-600", Off: "bg-gray-200" -->
+                <span aria-hidden="true"
+                  :class="shouldIncludeIndex ? 'bg-wp-blue' : 'bg-gray-200'"
+                  class="absolute h-4 mx-auto transition-colors duration-200 ease-in-out bg-gray-200 rounded-full w-9"></span>
+                <!-- On: "translate-x-5", Off: "translate-x-0" -->
+                <span aria-hidden="true"
+                  :class="shouldIncludeIndex ? 'translate-x-5' : 'translate-x-0'"
+                  class="absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white border border-gray-200 rounded-full shadow group-focus:shadow-outline group-focus:border-blue-300"></span>
+              </span>
+            </div>
+            <div class="pl-2">
+              <h4 class="text-sm font-medium text-black transition duration-150 ease-in-out group-hover:text-wp-blue">
+                Generate Index YAML
+              </h4>
+              <p class="mt-1 text-xs text-gray-600">
+                Include <code>index.yaml</code> which you can drop into <code>acf-yaml/</code> directly to auto-register fields via Windsor.
+              </p>
+            </div>
+          </div>
+          </template>
+          <div class="flex justify-center px-4 py-2 text-gray-500 cursor-pointer group hover:text-wp-blue"
+            @click="isShowingAllSettings = !isShowingAllSettings">
+            <span v-if="!isShowingAllSettings">Show All Settings</span>
+            <span v-else>Hide Extra Settings</span>
+          </div>
         </div>
       </div>
       <!-- ./ Sidebar Top -->
       <div class="mt-auto">
         <div class="px-6 py-3 border-t border-gray-200">
           <button
+            @click="onExport"
             type="button"
             class="block w-full button button-primary button-large">
             Export All
@@ -61,14 +123,38 @@
 </template>
 
 <script>
+import repository from "./../utils/repository";
 import { useGlobalState } from "./../store";
-import { toRefs } from 'vue';
+import { toRefs, ref } from 'vue';
+import fileSaver from 'file-saver';
 export default {
   setup () {
     let { isModeCompact, changeMode } = toRefs(useGlobalState())
+    let isFriendlyFilename = ref(true)
+    let shouldIncludeIndex = ref(true)
+    let isShowingAllSettings = ref(false)
     return {
       isModeCompact,
+      isFriendlyFilename,
+      shouldIncludeIndex,
+      isShowingAllSettings,
       changeMode
+    }
+  },
+  methods: {
+    async onExport () {
+      let mode = this.isModeCompact ? 'compact' : 'full'
+      let { fields } = await repository.export({
+        mode,
+        include_index: this.shouldIncludeIndex,
+        rename_files: this.isFriendlyFilename,
+      })
+      var zip = new window.JSZip()
+      fields.forEach(({ filename, content }) => {
+        zip.file(filename, content);
+      });
+      let blob = await zip.generateAsync({ type:"blob" })
+      fileSaver.saveAs(blob, 'acf-yaml.zip')
     }
   }
 }
