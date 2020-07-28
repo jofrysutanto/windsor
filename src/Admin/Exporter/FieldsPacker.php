@@ -131,23 +131,23 @@ class FieldsPacker
                                     });
                                 break;
                             case 'flexible_content':
-                            $fieldConfig->shiftToLast('layouts');
-                            $fieldConfig['layouts'] = (new MutableFieldCollection($fieldConfig['layouts']))
-                                ->associateBy('name')
-                                ->transformAsMutable(function (MutableField $layoutConfig) {
-                                    return $layoutConfig
-                                        ->shiftToLast('sub_fields')
-                                        ->modify('sub_fields', function ($layoutSubFields) {
-                                            return $this->packFields($layoutSubFields);
-                                        })
-                                        ->when($this->isCompact(), function (MutableField $mutable) {
-                                            $mutable->compactify([
-                                                CompactRules\CompactLayout::class
-                                            ]);
-                                        })
-                                        ->toArray();
-                                })
-                                ->toArray();
+                                $fieldConfig->shiftToLast('layouts');
+                                $fieldConfig['layouts'] = (new MutableFieldCollection($fieldConfig['layouts']))
+                                    ->associateBy('name')
+                                    ->transformAsMutable(function (MutableField $layoutConfig) {
+                                        return $layoutConfig
+                                            ->shiftToLast('sub_fields')
+                                            ->modify('sub_fields', function ($layoutSubFields) {
+                                                return $this->packFields($layoutSubFields);
+                                            })
+                                            ->when($this->isCompact(), function (MutableField $mutable) {
+                                                $mutable->compactify([
+                                                    CompactRules\CompactLayout::class
+                                                ]);
+                                            })
+                                            ->toArray();
+                                    })
+                                    ->toArray();
                                 break;
                             default:
                                 break;

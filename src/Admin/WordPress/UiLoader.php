@@ -50,7 +50,15 @@ class UiLoader
      */
     public function registerMenu()
     {
-        $this->adminHook = add_submenu_page('edit.php?post_type=acf-field-group', 'Windsor - Export Tool', 'Export to YAML', 'manage_options', 'windsor', array($this, 'renderAdminPage'), 70);
+        $this->adminHook = add_submenu_page(
+            'edit.php?post_type=acf-field-group',
+            'Windsor - Export Tool',
+            'Export to YAML',
+            'manage_options',
+            'windsor',
+            array($this, 'renderAdminPage'),
+            70
+        );
         add_action('load-' . $this->adminHook, [$this, 'loadAssets']);
     }
 
@@ -102,9 +110,18 @@ class UiLoader
         wp_enqueue_style('windsor-prism-css', 'https://unpkg.com/prismjs@v1.x/themes/prism-tomorrow.css', []);
 
         if ($this->shouldInlineAssets) {
-            wp_add_inline_style('windsor-prism-css', file_get_contents(__DIR__ . '/../../../frontend/assets/style.css'));
+            wp_add_inline_style(
+                'windsor-prism-css',
+                file_get_contents(__DIR__ . '/../../../frontend/assets/style.css')
+            );
         } else {
-            wp_enqueue_style('windsor-css', get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/style.css', [], $this->version, 'all');
+            wp_enqueue_style(
+                'windsor-css',
+                get_stylesheet_directory_uri() . '/vendor/jofrysutanto/windsor/frontend/assets/style.css',
+                [],
+                $this->version,
+                'all'
+            );
         }
 
         $jsDependencies = [
