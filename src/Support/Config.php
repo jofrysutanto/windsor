@@ -22,11 +22,16 @@ class Config implements Arrayable, ArrayAccess
     /**
      * Initialise configuration values
      *
-     * @return $this
+     * @param array $config
+     *
+     * @return self
      */
-    public static function initialise()
+    public static function initialise(array $config = [])
     {
-        return new static(apply_filters('acf-windsor/config', static::getDefault()));
+        return new static(array_merge(
+            apply_filters('acf-windsor/config', static::getDefault()),
+            $config
+        ));
     }
 
     /**

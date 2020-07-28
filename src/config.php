@@ -9,6 +9,14 @@ return [
     'debug' => false,
 
     /**
+     * Enable/disable admin interface using boolean value.
+     * Optionally receive an array to modify admin pages behaviour
+     * - 'enabled' {boolean} Same effect as `'ui' => true`
+     * - 'inline_assets' {boolean} Use this to inline admin styles and scripts if path to vendor/ is not public.
+     */
+    'ui' => false,
+
+    /**
      * The path where all ACF fields are stored
      */
     'path' => get_stylesheet_directory() . '/acf-fields',
