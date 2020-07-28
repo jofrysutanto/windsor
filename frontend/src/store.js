@@ -5,7 +5,7 @@ import repository from './utils/repository'
 export const useGlobalState = createGlobalState(
   () => {
     let isModeCompact = ref(true)
-    let loadedFields = ref({})
+    let indentation = ref(2)
     let yamlFields = ref({})
     let activePreview = ref(null)
     let isLoadingField = ref(null)
@@ -14,23 +14,26 @@ export const useGlobalState = createGlobalState(
       isModeCompact.value = mode
     }
 
+    const changeIndentation = (newVal) => {
+      indentation.value = newVal
+    }
+
     const loadField = async (key) => {
-      if (typeof loadedFields.value[key] !== 'undefined') {
+      if (typeof yamlFields.value[key] !== 'undefined') {
         return
       }
       isLoadingField.value = key
-      let { field_group, yaml } = await repository.fetchSingle({
+      let { yaml } = await repository.fetchSingle({
         key,
+        indent: indentation.value,
         mode: (isModeCompact.value === true) ? 'compact' : 'full'
       })
-      loadedFields.value[key] = field_group
-      yamlFields.value[key] = yaml.trim()
+      yamlFields.value[key] = yaml
       isLoadingField.value = null
     }
 
-    watch(isModeCompact, () => {
+    watch([isModeCompact, indentation], () => {
       yamlFields.value = {}
-      loadedFields.value = {}
       if (activePreview.value) {
         loadField(activePreview.value)
       }
@@ -38,11 +41,12 @@ export const useGlobalState = createGlobalState(
 
     return {
       isModeCompact,
+      indentation,
       isLoadingField,
-      loadedFields,
       yamlFields,
       activePreview,
       changeMode,
+      changeIndentation,
       loadField,
     }
   },

@@ -22,10 +22,10 @@
                   </span>
                 </div>
               </div>
-              <div class="hidden md:block">
-                <div>
-                  <div class="text-sm leading-5 text-gray-800">
-                    {{ field.count }} {{ field.count > 1 ? 'fields' : 'field' }}
+              <div class="self-center hidden text-right md:block">
+                <div class="ml-auto">
+                  <div class="inline-flex items-center justify-center w-6 h-6 px-3 py-1 text-xs leading-5 text-center text-gray-800 bg-gray-200 rounded-full">
+                    {{ field.count }}
                   </div>
                 </div>
               </div>

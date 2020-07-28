@@ -5,12 +5,16 @@ export default new class {
     let { data } = await ajax.post({
       action: 'windsor_load_fields',
     })
-    return data.field_groups
+    return {
+      fields: data.field_groups,
+      fields_unavailable: data.field_groups_unavailable,
+    }
   }
 
-  async fetchSingle ({key, mode}) {
+  async fetchSingle ({key, mode, indent = 2}) {
     let { data } = await ajax.post({
         action: 'windsor_load_single',
+        indent,
         key,
         mode
       })
@@ -18,9 +22,10 @@ export default new class {
     return { field_group, yaml }
   }
 
-  async export ({ mode, include_index = true, rename_files = true }) {
+  async export ({ mode, include_index = true, rename_files = true, indent = 2 }) {
     let { data } = await ajax.post({
       action: 'windsor_export',
+      indent,
       mode,
       include_index,
       rename_files,

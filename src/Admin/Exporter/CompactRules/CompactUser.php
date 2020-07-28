@@ -1,7 +1,7 @@
 <?php
 namespace Windsor\Admin\Exporter\CompactRules;
 
-class CompactImage extends CompactFile
+class CompactUser
 {
     use CompactHelper;
 
@@ -13,14 +13,12 @@ class CompactImage extends CompactFile
      */
     public function run($array)
     {
-        $array = parent::run($array);
         $array = $this->unsetIfEmpty($array, [
-            'min_width',
-            'min_height',
-            'max_width',
-            'max_height',
-            'min_size',
-            'max_size',
+            'role',
+        ]);
+        $array = $this->unsetIfZero($array, [
+            'multiple',
+            'allow_null',
         ]);
         return $array;
     }

@@ -1,7 +1,7 @@
 <?php
 namespace Windsor\Admin\Exporter\CompactRules;
 
-class CompactImage extends CompactFile
+class CompactGoogleMap
 {
     use CompactHelper;
 
@@ -13,14 +13,11 @@ class CompactImage extends CompactFile
      */
     public function run($array)
     {
-        $array = parent::run($array);
         $array = $this->unsetIfEmpty($array, [
-            'min_width',
-            'min_height',
-            'max_width',
-            'max_height',
-            'min_size',
-            'max_size',
+            'center_lat',
+            'center_lng',
+            'zoom',
+            'height',
         ]);
         return $array;
     }

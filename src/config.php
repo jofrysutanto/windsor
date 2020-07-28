@@ -11,8 +11,8 @@ return [
     /**
      * Enable/disable admin interface using boolean value.
      * Optionally receive an array to modify admin pages behaviour
-     * - 'enabled' Same effect as `'ui' => true`
-     * - 'inline_assets' Use this to inline admin styles and scripts if path to vendor/ is not public.
+     * - 'enabled' {boolean} Same effect as `'ui' => true`
+     * - 'inline_assets' {boolean} Use this to inline admin styles and scripts if path to vendor/ is not public.
      */
     'ui' => false,
 

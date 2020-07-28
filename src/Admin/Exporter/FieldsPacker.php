@@ -18,13 +18,41 @@ class FieldsPacker
      */
     protected $mode = 'full';
 
+    /**
+     * List of instantiable classes to simplify fields configuration
+     *
+     * @var array
+     */
     protected $compactRulesByType = [
-        // Field Types
+        // Basic
+        'number'           => CompactRules\CompactNumber::class,
+        'range'            => CompactRules\CompactRange::class,
         'textarea'         => CompactRules\CompactTextArea::class,
+        // Content
         'image'            => CompactRules\CompactImage::class,
+        'file'             => CompactRules\CompactFile::class,
+        'wysiwyg'          => CompactRules\CompactRichEditor::class,
+        'oembed'           => CompactRules\CompactOEmbed::class,
         'true_false'       => CompactRules\CompactTrueFalse::class,
+        'gallery'          => CompactRules\CompactGallery::class,
+        // Choice
+        'select'           => CompactRules\CompactSelect::class,
+        'checkbox'         => CompactRules\CompactCheckbox::class,
+        'radio'            => CompactRules\CompactRadio::class,
+        'button_group'     => CompactRules\CompactButtonGroup::class,
+        // Relational
+        'post_object'      => CompactRules\CompactPostObject::class,
+        'page_link'        => CompactRules\CompactPageLink::class,
+        'relationship'     => CompactRules\CompactRelationship::class,
+        'taxonomy'         => CompactRules\CompactTaxonomy::class,
+        'user'             => CompactRules\CompactUser::class,
+        // jQuery
+        'google_map'       => CompactRules\CompactGoogleMap::class,
         // Layout
         'tab'              => CompactRules\CompactTab::class,
+        'accordion'        => CompactRules\CompactAccordion::class,
+        'message'          => CompactRules\CompactMessage::class,
+        'clone'            => CompactRules\CompactClone::class,
         'repeater'         => CompactRules\CompactRepeater::class,
         'flexible_content' => CompactRules\CompactFlexibleContent::class,
     ];
@@ -117,11 +145,9 @@ class FieldsPacker
                                                 CompactRules\CompactLayout::class
                                             ]);
                                         })
-                                        // ->dump()
                                         ->toArray();
                                 })
                                 ->toArray();
-                            // dump($fieldConfig['layouts']);
                                 break;
                             default:
                                 break;

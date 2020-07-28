@@ -12,6 +12,7 @@ export const useLoadYaml = (fieldKey) => {
     try {
       await loadField(fieldKey.value)
     } catch (error) {
+      console.error(error)
       hasError.value = true
     }
   })

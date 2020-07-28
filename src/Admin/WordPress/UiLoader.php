@@ -50,7 +50,7 @@ class UiLoader
      */
     public function registerMenu()
     {
-        $this->adminHook = add_submenu_page('edit.php?post_type=acf-field-group', 'Windsor - Export Tool', 'Export to YAML', 'manage_options', 'windsor', array($this, 'renderAdminPage'), 'dashicons-upload', 70);
+        $this->adminHook = add_submenu_page('edit.php?post_type=acf-field-group', 'Windsor - Export Tool', 'Export to YAML', 'manage_options', 'windsor', array($this, 'renderAdminPage'), 70);
         add_action('load-' . $this->adminHook, [$this, 'loadAssets']);
     }
 
@@ -76,6 +76,17 @@ class UiLoader
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
+        // $store = new \Windsor\Admin\Exporter\FieldGroupsStore;
+        // dump($store->queryNotExportable());
+        // $yaml = new \Windsor\Admin\Exporter\YamlComposer(2);
+        // $packer = new \Windsor\Admin\Exporter\FieldsPacker(
+        //     AjaxHandler::instance()->loadFieldGroupForExport('group_5f1fdb8a8246d')
+        // );
+        // $result = $packer
+        //     ->setMode('compact')
+        //     ->pack();
+        // dump($yaml->generate($result));
+
         // Our Vite app register itself to this element
         // and let it take care of the rest
         echo '<div id="windsor"></div>';
@@ -98,7 +109,7 @@ class UiLoader
 
         $jsDependencies = [
             'windsor-prismjs-core'       => 'https://unpkg.com/prismjs@v1.x/components/prism-core.min.js',
-            'windsor-prismjs-autoloader' => 'https://unpkg.com/prismjs@v1.x/plugins/autoloader/prism-autoloader.min.js',
+            'windsor-prismjs-yaml'       => 'https://unpkg.com/prismjs@v1.x/components/prism-yaml.min.js',
             'windsor-jszip'              => 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js',
         ];
         foreach ($jsDependencies as $key => $cdn) {

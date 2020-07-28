@@ -7,19 +7,13 @@ class YamlComposer
 {
 
     /**
-     * @var string 'full'|'compact'
+     * @var integer Indentation in spaces
      */
-    protected $mode;
+    protected $indent;
 
-    /**
-     * @var array Array representation of field group
-     */
-    protected $field;
-
-    public function __construct($field, $mode = 'full')
+    public function __construct($indent = 2)
     {
-        $this->field = $field;
-        $this->mode = $mode;
+        $this->indent = $indent;
     }
 
     /**
@@ -27,13 +21,14 @@ class YamlComposer
      *
      * @return string
      */
-    public function generate()
+    public function generate($array)
     {
-        $packer = new FieldsPacker($this->field);
-        $result = $packer
-            ->setMode($this->mode)
-            ->pack();
-        $result = Yaml::dump($result, 50, 2);
+        $result = Yaml::dump(
+            $array,
+            50,
+            $this->indent,
+            Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE
+        );
         return $result;
     }
 }
