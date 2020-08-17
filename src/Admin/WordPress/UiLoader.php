@@ -11,7 +11,7 @@ class UiLoader
      *
      * @var string
      */
-    protected $version = '0.9.7';
+    protected $version = '1.0.0';
 
     /**
      * Admin page suffix hook coming from menu registration
@@ -84,17 +84,6 @@ class UiLoader
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        // $store = new \Windsor\Admin\Exporter\FieldGroupsStore;
-        // dump($store->queryNotExportable());
-        // $yaml = new \Windsor\Admin\Exporter\YamlComposer(2);
-        // $packer = new \Windsor\Admin\Exporter\FieldsPacker(
-        //     AjaxHandler::instance()->loadFieldGroupForExport('group_5f1fdb8a8246d')
-        // );
-        // $result = $packer
-        //     ->setMode('compact')
-        //     ->pack();
-        // dump($yaml->generate($result));
-
         // Our Vite app register itself to this element
         // and let it take care of the rest
         echo '<div id="windsor"></div>';
@@ -123,6 +112,8 @@ class UiLoader
                 'all'
             );
         }
+        // Prevent layout shift, intentionally hiding meta links on current page.
+        wp_add_inline_style('windsor-prism-css', '#screen-meta-links { display: none }');
 
         $jsDependencies = [
             'windsor-prismjs-core'       => 'https://unpkg.com/prismjs@v1.x/components/prism-core.min.js',
@@ -132,9 +123,9 @@ class UiLoader
         foreach ($jsDependencies as $key => $cdn) {
             wp_enqueue_script($key, $cdn, [], null, true);
         }
+        $lastHandle = array_keys($jsDependencies)[count($jsDependencies) - 1];
         if ($this->shouldInlineAssets) {
-            $handle = array_keys($jsDependencies)[count($jsDependencies) - 1];
-            wp_add_inline_script($handle, file_get_contents(__DIR__ . '/../../../frontend/assets/index.js'));
+            wp_add_inline_script($lastHandle, file_get_contents(__DIR__ . '/../../../frontend/assets/index.js'));
         } else {
             wp_enqueue_script(
                 'windsor-js',
@@ -144,6 +135,11 @@ class UiLoader
                 true
             );
         }
+        wp_localize_script($lastHandle, '_acf_windsor', [
+            'acf' => [
+                'version' => ACF_VERSION,
+            ],
+        ]);
     }
 
     /**

@@ -74,7 +74,8 @@ export default {
       fields: [],
       fieldsUnavailable: [],
       showUnavailable: false,
-      hasError: false
+      hasError: false,
+      ui: _acf_windsor.acf.ui
     }
   },
   components: {
@@ -83,7 +84,7 @@ export default {
     WindsorFieldGroups,
     WindsorError,
   },
-  methods: {
+  computed: {
   },
   async mounted () {
     try {

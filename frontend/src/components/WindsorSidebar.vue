@@ -1,9 +1,9 @@
 <template>
-  <div class="fixed top-0 right-0 z-10 h-screen pt-8 bg-white border-l border-gray-200 w-72">
+  <div class="fixed top-0 right-0 z-10 h-screen pt-8 bg-white border-l border-acf-border w-72">
     <div class="flex flex-col h-full">
       <!-- Sidebar Top -->
       <div>
-        <div class="flex items-center h-12 px-4 border-b border-gray-200">
+        <div class="flex items-center px-4 border-b border-acf-border h-acf-header-height">
           <h2 class="text-sm font-medium text-gray-700">
             Settings
           </h2>
@@ -16,7 +16,7 @@
             </a>
           </div>
         </div>
-        <div class="flex flex-col transition duration-150 ease-in-out border-gray-200 divide-y divide-y-gray-200">
+        <div class="flex flex-col transition duration-150 ease-in-out divide-y border-acf-border divide-y-gray-200">
           <div class="flex p-4">
             <div class="flex-grow">
               <label for="location" class="block text-sm font-medium leading-5 text-black">Indentation</label>
@@ -46,7 +46,7 @@
                 <!-- On: "translate-x-5", Off: "translate-x-0" -->
                 <span aria-hidden="true"
                   :class="isModeCompact ? 'translate-x-5' : 'translate-x-0'"
-                  class="absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white border border-gray-200 rounded-full shadow group-focus:shadow-outline group-focus:border-blue-300"></span>
+                  class="absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white border rounded-full shadow border-acf-border group-focus:shadow-outline group-focus:border-blue-300"></span>
               </span>
             </div>
             <div class="pl-2">
@@ -74,7 +74,7 @@
                 <!-- On: "translate-x-5", Off: "translate-x-0" -->
                 <span aria-hidden="true"
                   :class="isFriendlyFilename ? 'translate-x-5' : 'translate-x-0'"
-                  class="absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white border border-gray-200 rounded-full shadow group-focus:shadow-outline group-focus:border-blue-300"></span>
+                  class="absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white border rounded-full shadow border-acf-border group-focus:shadow-outline group-focus:border-blue-300"></span>
               </span>
             </div>
             <div class="pl-2">
@@ -101,7 +101,7 @@
                 <!-- On: "translate-x-5", Off: "translate-x-0" -->
                 <span aria-hidden="true"
                   :class="shouldIncludeIndex ? 'translate-x-5' : 'translate-x-0'"
-                  class="absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white border border-gray-200 rounded-full shadow group-focus:shadow-outline group-focus:border-blue-300"></span>
+                  class="absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white border rounded-full shadow border-acf-border group-focus:shadow-outline group-focus:border-blue-300"></span>
               </span>
             </div>
             <div class="pl-2">
@@ -125,7 +125,7 @@
       </div>
       <!-- ./ Sidebar Top -->
       <div class="mt-auto">
-        <div class="px-6 py-3 border-t border-gray-200">
+        <div class="px-6 py-3 border-t border-acf-border">
           <button
             @click="onExport"
             type="button"
