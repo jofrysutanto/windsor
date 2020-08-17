@@ -13,7 +13,7 @@ This package extends [Advanced Custom Fields](https://advancedcustomfields.com) 
 
 - The easiest way to install Windsor is to use composer:
 ```sh
-composer require jofrysutanto/windsor "^0.9"
+composer require jofrysutanto/windsor
 ```
 - If you are using VSCode, be sure to add the Schema file to your configuration.
 - Ensure you have included composer auto-loader file. If you're not sure, add the following line into your `functions.php` file:
