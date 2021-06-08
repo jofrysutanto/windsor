@@ -1,5 +1,7 @@
 # ACF Windsor
 
+[![Latest Stable Version](https://poser.pugx.org/jofrysutanto/windsor/v)](//packagist.org/packages/jofrysutanto/windsor) [![Total Downloads](https://poser.pugx.org/jofrysutanto/windsor/downloads)](//packagist.org/packages/jofrysutanto/windsor) [![Latest Unstable Version](https://poser.pugx.org/jofrysutanto/windsor/v/unstable)](//packagist.org/packages/jofrysutanto/windsor) [![License](https://poser.pugx.org/jofrysutanto/windsor/license)](//packagist.org/packages/jofrysutanto/windsor)
+
 This package extends [Advanced Custom Fields](https://advancedcustomfields.com) plugin for WordPress and enable developers to write their ACF fields blazingly fast in configuration file.
 
 ![ACF Windsor](https://raw.githubusercontent.com/jofrysutanto/windsor/master/screenshot.png)
